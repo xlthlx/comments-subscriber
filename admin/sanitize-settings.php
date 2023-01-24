@@ -18,7 +18,6 @@ function cs_sanitize_settings( $options ) {
 		'checkbox',
 		'checked',
 		'ty_enabled',
-		'disable_css',
 		'delete_data',
 		'theme_compat',
 	);
@@ -49,7 +48,7 @@ function cs_sanitize_settings( $options ) {
 	);
 	foreach ( $richtext_keys as $richtext_key ) {
 		if ( isset( $options[ $richtext_key ] ) ) {
-			$options[ $richtext_key ] = wp_kses_post( $options[ $richtext_key ] );
+			$options[ $richtext_key ] = wp_slash( $options[ $richtext_key ] );
 		}
 	}
 	// Emails.

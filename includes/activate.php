@@ -41,7 +41,6 @@ function cs_process_import_subscribers( $subscriber_data ) {
 			continue;
 		}
 		$token = md5( mt_rand() );
-		// TODO: check duplicates
 
 		// Checks for duplicates.
 		$duplicate = $wpdb->get_var(
@@ -55,7 +54,7 @@ function cs_process_import_subscribers( $subscriber_data ) {
 		if(empty($duplicate)) {
 			$wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$wpdb->prefix}comment_subscriber 
+					"INSERT INTO {$wpdb->prefix}comment_subscriber
 				( post_id, name, email, token )
 				VALUES ( %d, %s, %s, %s )
 			",
@@ -84,10 +83,10 @@ function cs_cleanup_prior() {
 
 	// delete every email in the comment_subscriber table that doesn’t have a corresponding comment.
 	$wpdb->query(
-		"DELETE FROM {$wpdb->prefix}comment_subscriber 
-       WHERE email 
-                 NOT IN ( SELECT comment_author_email 
-                          FROM {$wpdb->comments} )" 
+		"DELETE FROM {$wpdb->prefix}comment_subscriber
+       WHERE email
+                 NOT IN ( SELECT comment_author_email
+                          FROM {$wpdb->comments} )"
 	);
 
 	// Delete every email in the comment_subscriber table isn't valid.
@@ -150,13 +149,12 @@ function cs_activate() {
 		sprintf( __( 'To unsubscribe from this notification service, <a href="%s">click here</a>.', 'comments-subscriber' ), '{unsubscribe}' );
 
 	$default_options['label'] = __( 'Notify me when new comments are added.', 'comments-subscriber' );
+	$default_options['test']  = get_option( 'admin_email' );
 	/* translators: 1: Comment author, 2: Post title. */
 	$default_options['subject']    = sprintf( __( 'A new comment from %1$s on "%2$s"', 'comments-subscriber' ), '{author}', '{title}' );
 	$default_options['thankyou']   = __( 'Your subscription has been removed. You\'ll be redirect to the home page within few seconds.', 'comments-subscriber' );
 	$default_options['name']       = get_option( 'blogname' );
 	$default_options['from']       = get_option( 'admin_email' );
-	$default_options['checkbox']   = '1';
-	$default_options['checked']    = '1';
 	$default_options['ty_subject'] = __( 'Thank you for your first comment', 'comments-subscriber' );
 	$default_options['ty_message'] =
 		/* translators: 1: Subscriber name. */
@@ -179,19 +177,19 @@ function cs_activate() {
 	cs_cleanup_prior();
 	// Import subscribers from Subscribe to Comments plugin, if any exist.
 	$stc_subscribers = $wpdb->get_results(
-		"SELECT LCASE(meta_value) as email, post_id 
-FROM {$wpdb->prefix}postmeta 
-WHERE meta_key = '_sg_subscribe-to-comments'" 
+		"SELECT LCASE(meta_value) as email, post_id
+FROM {$wpdb->prefix}postmeta
+WHERE meta_key = '_sg_subscribe-to-comments'"
 	);
 	if ( $stc_subscribers ) {
 		cs_process_import_subscribers( $stc_subscribers );
 	}
 	// Import subscribers from Subscribe to Comments Reloaded, if any active subscribers exist.
 	$stcr_subscribers = $wpdb->get_results(
-		"SELECT REPLACE(meta_key, '_stcr@_', '') AS email, post_id 
-FROM {$wpdb->prefix}postmeta 
-WHERE meta_key LIKE '\_stcr@\_%' 
-  AND meta_value LIKE '%|Y'" 
+		"SELECT REPLACE(meta_key, '_stcr@_', '') AS email, post_id
+FROM {$wpdb->prefix}postmeta
+WHERE meta_key LIKE '\_stcr@\_%'
+  AND meta_value LIKE '%|Y'"
 	);
 
 	if ( $stcr_subscribers ) {
