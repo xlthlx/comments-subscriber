@@ -36,12 +36,12 @@ function cs_options_page() {
 			$message               = cs_replace( $ty_message, $cs_data );
 			$subject               = $options['ty_subject'];
 			$subject               = str_replace(
-					array( '{title}', '{author}' ),
-					array(
-							$cs_data->title,
-							$cs_data->author,
-					),
-					$subject
+				array( '{title}', '{author}' ),
+				array(
+					$cs_data->title,
+					$cs_data->author,
+				),
+				$subject
 			);
 			cs_mail( $test, $subject, $message );
 		}
@@ -54,9 +54,7 @@ function cs_options_page() {
 	$test            = empty( $options['test'] ) ? '' : sanitize_text_field( $options['test'] );
 	$copy            = empty( $options['copy'] ) ? '' : sanitize_text_field( $options['copy'] );
 	$label           = empty( $options['label'] ) ? '' : sanitize_text_field( $options['label'] );
-	$ty_message      = empty( $options['ty_message'] ) ? '' : sanitize_text_field( $options['ty_message'] );
 	$ty_subject      = empty( $options['ty_subject'] ) ? '' : sanitize_text_field( $options['ty_subject'] );
-	$thank_you       = empty( $options['thankyou'] ) ? '' : sanitize_text_field( $options['thankyou'] );
 
 	// Removes a single email for all subscriptions.
 	if ( isset( $_POST['remove_email'] ) ) {
@@ -77,23 +75,6 @@ function cs_options_page() {
 	?>
 	<div class="wrap">
 		<h1><?php _e( 'Comments Subscriber Settings', 'comments-subscriber' ); ?></h1>
-		<form method="post">
-			<h2><?php _e( 'Email Management', 'comments-subscriber' ); ?></h2>
-			<p><?php _e( 'Remove a specific email from all subscriptions.', 'comments-subscriber' ); ?></p>
-			<table class="form-table">
-				<tr>
-					<th><label for="email"><?php _e( 'Remove email', 'comments-subscriber' ); ?></label></th>
-					<td><input type="text" id="email" name="email" size="30"/>
-						<p><?php _e( 'Remove this email from all subscriptions.', 'comments-subscriber' ); ?></p>
-					</td>
-				</tr>
-			</table>
-			<p class="submit">
-				<?php wp_nonce_field( 'remove_email' ); ?>
-				<input type="submit" name="remove_email" class="button-primary"
-					   value="<?php _e( 'Remove', 'comments-subscriber' ); ?>"/>
-			</p>
-		</form>
 
 		<hr/>
 
@@ -167,7 +148,19 @@ function cs_options_page() {
 				<tr>
 					<th><label for="options[message]"><?php _e( 'Message Body', 'comments-subscriber' ); ?></label></th>
 					<td>
-						<textarea name="options[message]" id="options[message]" rows="10" cols="70"><?php echo wp_unslash($options['message']); ?></textarea>
+						<?php
+						$message_args = array(
+							'tinymce'       => true,
+							'textarea_name' => 'options[message]',
+							'media_buttons' => false,
+							'textarea_rows' => 12,
+							'quicktags'     => false,
+							'teeny'         => true,
+							'editor_css'    => '<style>.wp-editor-container{width: 45%}</style>',
+						);
+						wp_editor( $options['message'], 'options[message]', $message_args );
+
+						?>
 						<p>
 							<?php
 							/* translators: 1: Subscriber name, 2: Commenter name, 3: Post title, 4: Comment text, 5: Comment link, 6: Post link, 7: Line Break */
@@ -214,7 +207,18 @@ function cs_options_page() {
 						<label for="thankyou"><?php _e( 'Unsubscribe Message', 'comments-subscriber' ); ?></label>
 					</th>
 					<td>
-						<textarea name="options[thankyou]" id="options[thankyou]" rows="10" cols="70"><?php echo esc_textarea($thank_you); ?></textarea>
+						<?php
+						$thankyou_args = array(
+							'tinymce'       => true,
+							'textarea_name' => 'options[thankyou]',
+							'media_buttons' => false,
+							'textarea_rows' => 10,
+							'quicktags'     => false,
+							'teeny'         => true,
+						);
+						wp_editor( $options['thankyou'], 'options[thankyou]', $thankyou_args );
+
+						?>
 						<p>
 						<?php _e( 'Example: You have unsubscribed successfully. Thank you. I will send you to the home page in 3 seconds.', 'comments-subscriber' ); ?>
 						</p>
@@ -252,7 +256,17 @@ function cs_options_page() {
 				<tr>
 					<th><label for="options[ty_message]"><?php _e( 'Message Body', 'comments-subscriber' ); ?></label></th>
 					<td>
-						<textarea name="options[ty_message]" id="options[ty_message]" rows="10" cols="70"><?php echo esc_textarea($ty_message); ?></textarea>
+						<?php
+						$ty_message_args = array(
+							'tinymce'       => true,
+							'textarea_name' => 'options[ty_message]',
+							'media_buttons' => false,
+							'textarea_rows' => 10,
+							'quicktags'     => false,
+							'teeny'         => true,
+						);
+						wp_editor( $options['ty_message'], 'options[ty_message]', $ty_message_args );
+						?>
 						<p>
 						<?php
 						/* translators: 1: Post title, 2: Commenter name, 3: Post link, 4: Comment link, 5: Comment text. */
@@ -323,25 +337,45 @@ function cs_options_page() {
 		<hr/>
 
 		<form method="post">
+			<h2><?php _e( 'Email Management', 'comments-subscriber' ); ?></h2>
+			<p><?php _e( 'Remove a specific email from all subscriptions.', 'comments-subscriber' ); ?></p>
+			<table class="form-table">
+				<tr>
+					<th><label for="email"><?php _e( 'Remove email', 'comments-subscriber' ); ?></label></th>
+					<td><input type="text" id="email" name="email" size="30"/>
+						<p><?php _e( 'Remove this email from all subscriptions.', 'comments-subscriber' ); ?></p>
+					</td>
+				</tr>
+			</table>
+			<p class="submit">
+				<?php wp_nonce_field( 'remove_email' ); ?>
+				<input type="submit" name="remove_email" class="button-primary"
+					   value="<?php _e( 'Remove', 'comments-subscriber' ); ?>"/>
+			</p>
+		</form>
+
+		<hr/>
+
+		<form method="post">
 			<?php wp_nonce_field( 'remove' ); ?>
 			<h2><?php _e( 'Subscribers list', 'comments-subscriber' ); ?></h2>
 			<ul style="list-style: square;padding-left:10px">
 				<?php
 				$list = $wpdb->get_results( "SELECT DISTINCT post_id, COUNT(post_id) AS total FROM {$wpdb->prefix}comment_subscriber WHERE post_id != 0 GROUP BY post_id ORDER BY total DESC" );
-				if($list) {
+				if ( $list ) {
 					foreach ( $list as $r ) {
 						$post_id = (int) $r->post_id;
 						$total   = (int) $r->total;
 						$post    = get_post( $post_id );
 						echo '<li><a href="' . esc_url( get_permalink( $post_id ) ) . '" target="_blank">' .
-							 esc_html( $post->post_title ) . '</a><br/>'.
+							 esc_html( $post->post_title ) . '</a><br/>' .
 							 __( 'Subscribers: ', 'comments-subscriber' ) . $total . '</li>';
 						$list2 = $wpdb->get_results(
-								$wpdb->prepare(
-										"SELECT id,email,name FROM {$wpdb->prefix}comment_subscriber
+							$wpdb->prepare(
+								"SELECT id,email,name FROM {$wpdb->prefix}comment_subscriber
                      WHERE post_id=%d",
-										$post_id
-								)
+								$post_id
+							)
 						);
 						echo '<ul>';
 						foreach ( $list2 as $r2 ) {
@@ -350,9 +384,8 @@ function cs_options_page() {
 						echo '</ul>';
 						echo '<input class="button-secondary" type="submit" name="remove" value="' . __( 'Remove', 'comments-subscriber' ) . '"/>';
 					}
-				}
-				else {
-					echo "<p>". __( 'There are no subscribers.', 'comments-subscriber' )."</p>";
+				} else {
+					echo '<p>' . __( 'There are no subscribers.', 'comments-subscriber' ) . '</p>';
 				}
 				?>
 			</ul>

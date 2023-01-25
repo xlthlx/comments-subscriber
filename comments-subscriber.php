@@ -78,8 +78,10 @@ function cs_init() {
 			__( 'Your subscription has been removed. You\'ll be redirect to the home page within few seconds.', 'comments-subscriber' ) :
 			esc_html( $options['thankyou'] );
 
+		// @codingStandardsIgnoreStart
 		$output .= '<html lang="en">
 				<head><title>Thank you</title>';
+		// @codingStandardsIgnoreEnd
 		$output .= '<meta http-equiv="refresh" content="3;url=' . esc_url( get_option( 'home' ) ) . '"/>';
 		$output .= '</head><body>';
 		$output .= $thank_you;
@@ -114,7 +116,7 @@ function cs_plugin_settings() {
 /**
  * Add settings link to plugin actions.
  *
- * @param array $plugin_actions The plugin actions.
+ * @param array  $plugin_actions The plugin actions.
  * @param string $plugin_file The plugin file path.
  *
  * @return array

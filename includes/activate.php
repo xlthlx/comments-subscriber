@@ -51,7 +51,7 @@ function cs_process_import_subscribers( $subscriber_data ) {
 			)
 		);
 
-		if(empty($duplicate)) {
+		if ( empty( $duplicate ) ) {
 			$wpdb->query(
 				$wpdb->prepare(
 					"INSERT INTO {$wpdb->prefix}comment_subscriber
@@ -119,7 +119,7 @@ function cs_activate() {
 	global $wpdb;
 	// Create table unless it exists for Comment Notifier plugin.
 	$wpdb->query(
-		"CREATE TABLE IF NOT EXISTS `".$wpdb->prefix."comment_subscriber` (
+		'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . "comment_subscriber` (
 		  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 		  `post_id` int(10) unsigned NOT NULL DEFAULT 0,
 		  `name` varchar(100) NOT NULL DEFAULT '',
@@ -152,7 +152,8 @@ function cs_activate() {
 	$default_options['test']  = get_option( 'admin_email' );
 	/* translators: 1: Comment author, 2: Post title. */
 	$default_options['subject']    = sprintf( __( 'A new comment from %1$s on "%2$s"', 'comments-subscriber' ), '{author}', '{title}' );
-	$default_options['thankyou']   = __( 'Your subscription has been removed. You\'ll be redirect to the home page within few seconds.', 'comments-subscriber' );
+	$default_options['thankyou']   = __( 'Your subscription has been removed.', 'comments-subscriber' ) . "\n\n" .
+	__( 'You\'ll be redirected to the home page within a few seconds.', 'comments-subscriber' );
 	$default_options['name']       = get_option( 'blogname' );
 	$default_options['from']       = get_option( 'admin_email' );
 	$default_options['ty_subject'] = __( 'Thank you for your first comment', 'comments-subscriber' );

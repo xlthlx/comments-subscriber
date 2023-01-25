@@ -11,7 +11,7 @@
  * @return string
  */
 function cs_checkbox_html() {
-	$output    = '';
+	$output  = '';
 	$options = get_option( 'cs_options' );
 	if ( ! empty( $options['checkbox'] ) ) {
 		$output .= wp_nonce_field( 'nonce_comment', 'nonce_comment', true, false );

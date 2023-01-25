@@ -22,10 +22,10 @@ function cs_plugin_uninstall() {
 function cs_uninstall() {
 	global $wpdb;
 
-	//$options = get_option( 'cs_options' );
-	//if ( ! empty( $options['delete_data'] ) ) {
+	// $options = get_option( 'cs_options' );
+	// if ( ! empty( $options['delete_data'] ) ) {
 		delete_option( 'cs_options' );
 		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}comment_subscriber" );
-	//}
+	// }
 }
 

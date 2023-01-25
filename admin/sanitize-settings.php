@@ -40,17 +40,6 @@ function cs_sanitize_settings( $options ) {
 			$options[ $text_key ] = sanitize_text_field( $options[ $text_key ] );
 		}
 	}
-	// Some HTML.
-	$richtext_keys = array(
-		'message',
-		'thankyou',
-		'ty_message',
-	);
-	foreach ( $richtext_keys as $richtext_key ) {
-		if ( isset( $options[ $richtext_key ] ) ) {
-			$options[ $richtext_key ] = wp_slash( $options[ $richtext_key ] );
-		}
-	}
 	// Emails.
 	if ( isset( $options['from'] ) ) {
 		$options['from'] = sanitize_email( $options['from'] );
