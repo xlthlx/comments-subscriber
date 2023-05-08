@@ -15,12 +15,15 @@
  */
 function cs_unsubscribe( $id, $token ) {
 	global $wpdb;
+	$type = 'subscription';
 
 	$wpdb->query(
 		$wpdb->prepare(
-			"DELETE FROM {$wpdb->prefix}comment_subscriber 
-	WHERE id=%d 
-	AND token=%s",
+			"DELETE FROM {$wpdb->prefix}comments 
+			WHERE comment_type = %s
+			AND comment_post_ID=%d 
+			AND comment_content=%s",
+			$type,
 			$id,
 			$token 
 		) 

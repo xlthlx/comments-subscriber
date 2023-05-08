@@ -62,7 +62,7 @@ function cs_options_page() {
 			die( __( 'Security violated', 'comments-subscriber' ) );
 		}
 		$email = strtolower( sanitize_email( $_POST['email'] ) );
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}comment_subscriber WHERE email=%s", $email ) );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription' AND comment_author_email=%s", $email ) );
 	}
 
 	if ( isset( $_POST['remove'] ) ) {
@@ -70,7 +70,7 @@ function cs_options_page() {
 			die( __( 'Security violated', 'comments-subscriber' ) );
 		}
 		$id = implode( ',', $_POST['s'] );
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}comment_subscriber WHERE id IN (%d)", $id ) );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}comment WHERE comment_type = 'subscription' AND comment_ID IN (%d)", $id ) );
 	}
 	?>
 	<div class="wrap">
@@ -361,10 +361,10 @@ function cs_options_page() {
 			<h2><?php _e( 'Subscribers list', 'comments-subscriber' ); ?></h2>
 			<ul style="list-style: square;padding-left:10px">
 				<?php
-				$list = $wpdb->get_results( "SELECT DISTINCT post_id, COUNT(post_id) AS total FROM {$wpdb->prefix}comment_subscriber WHERE post_id != 0 GROUP BY post_id ORDER BY total DESC" );
+				$list = $wpdb->get_results( "SELECT DISTINCT comment_post_ID, COUNT(comment_post_ID) AS total FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription' AND comment_post_ID != 0 GROUP BY comment_post_ID ORDER BY total DESC" );
 				if ( $list ) {
 					foreach ( $list as $r ) {
-						$post_id = (int) $r->post_id;
+						$post_id = (int) $r->comment_post_ID;
 						$total   = (int) $r->total;
 						$post    = get_post( $post_id );
 						echo '<li><a href="' . esc_url( get_permalink( $post_id ) ) . '" target="_blank">' .
@@ -372,14 +372,14 @@ function cs_options_page() {
 							 __( 'Subscribers: ', 'comments-subscriber' ) . $total . '</li>';
 						$list2 = $wpdb->get_results(
 							$wpdb->prepare(
-								"SELECT id,email,name FROM {$wpdb->prefix}comment_subscriber
-                     WHERE post_id=%d",
+								"SELECT comment_ID,comment_author_email,comment_author FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription'
+                     AND comment_post_ID=%d",
 								$post_id
 							)
 						);
 						echo '<ul>';
 						foreach ( $list2 as $r2 ) {
-							echo '<li><input type="checkbox" name="s[]" value="' . esc_attr( $r2->id ) . '"/> ' . esc_html( $r2->email ) . '</li>';
+							echo '<li><input type="checkbox" name="s[]" value="' . esc_attr( $r2->comment_ID ) . '"/> ' . esc_html( $r2->comment_author_email ) . '</li>';
 						}
 						echo '</ul>';
 						echo '<input class="button-secondary" type="submit" name="remove" value="' . __( 'Remove', 'comments-subscriber' ) . '"/>';

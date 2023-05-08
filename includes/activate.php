@@ -45,24 +45,27 @@ function cs_process_import_subscribers( $subscriber_data ) {
 		// Checks for duplicates.
 		$duplicate = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT email FROM {$wpdb->prefix}comment_subscriber WHERE email = %s and post_id = %d",
+				"SELECT comment_author_email FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription' AND comment_author_email = %s and comment_post_ID = %d",
 				$data->email,
 				$data->post_id
 			)
 		);
 
+		$type = 'subscription';
+
 		if ( empty( $duplicate ) ) {
 			$wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO {$wpdb->prefix}comment_subscriber
-				( post_id, name, email, token )
-				VALUES ( %d, %s, %s, %s )
+					"INSERT INTO {$wpdb->prefix}comments
+				( comment_post_ID, comment_author, comment_author_email, comment_content, comment_type )
+				VALUES ( %d, %s, %s, %s, %s )
 			",
 					array(
 						$data->post_id,
 						$data->name,
 						$data->email,
 						$token,
+						$type
 					)
 				)
 			);
@@ -81,20 +84,12 @@ function cs_cleanup_prior() {
 	$wpdb->delete( $wpdb->comments, array( 'comment_approved' => 'trash' ) );
 	$wpdb->delete( $wpdb->comments, array( 'comment_approved' => 'spam' ) );
 
-	// delete every email in the comment_subscriber table that doesn’t have a corresponding comment.
-	$wpdb->query(
-		"DELETE FROM {$wpdb->prefix}comment_subscriber
-       WHERE email
-                 NOT IN ( SELECT comment_author_email
-                          FROM {$wpdb->comments} )"
-	);
-
 	// Delete every email in the comment_subscriber table isn't valid.
-	$comment_subscribers = $wpdb->get_col( "SELECT email FROM {$wpdb->prefix}comment_subscriber" );
+	$comment_subscribers = $wpdb->get_col( "SELECT comment_author_email FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription'" );
 	foreach ( $comment_subscribers as $email ) {
 		if ( ! cs_valid_email( $email ) ) {
 			$wpdb->query(
-				$wpdb->prepare( "DELETE FROM {$wpdb->prefix}comment_subscriber WHERE email = %s", $email )
+				$wpdb->prepare( "DELETE FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription' AND comment_author_email = %s", $email )
 			);
 		}
 	}
@@ -117,19 +112,6 @@ function cs_plugin_activate() {
  */
 function cs_activate() {
 	global $wpdb;
-	// Create table unless it exists for Comment Notifier plugin.
-	$wpdb->query(
-		'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . "comment_subscriber` (
-		  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-		  `post_id` int(10) unsigned NOT NULL DEFAULT 0,
-		  `name` varchar(100) NOT NULL DEFAULT '',
-		  `email` varchar(100) NOT NULL DEFAULT '',
-		  `token` varchar(50) NOT NULL DEFAULT '',
-		  PRIMARY KEY (`id`),
-		  UNIQUE KEY `post_id_email` (`post_id`,`email`),
-		  KEY `token` (`token`)
-		);"
-	);
 
 	$default_options['message'] =
 		/* translators: 1: Subscriber name. */
@@ -169,14 +151,14 @@ function cs_activate() {
 
 	$options = get_option( 'cs_options' );
 	if ( ! $options ) {
-		$options = array();// setting the get_option default to empty array did not work as expected.
+		$options = array();// setting the get_option default to an empty array did not work as expected.
 	}
 
 	$options = array_merge( $default_options, $options );
 	update_option( 'cs_options', $options );
 	// Remove spammers that were previously subscribed by Comment Notifier plugin.
 	cs_cleanup_prior();
-	// Import subscribers from Subscribe to Comments plugin, if any exist.
+	// Import subscribers from Subscribe to Comments plugin if any exist.
 	$stc_subscribers = $wpdb->get_results(
 		"SELECT LCASE(meta_value) as email, post_id
 FROM {$wpdb->prefix}postmeta
@@ -185,7 +167,7 @@ WHERE meta_key = '_sg_subscribe-to-comments'"
 	if ( $stc_subscribers ) {
 		cs_process_import_subscribers( $stc_subscribers );
 	}
-	// Import subscribers from Subscribe to Comments Reloaded, if any active subscribers exist.
+	// Import subscribers from Subscribe to Comments Reloaded if any active subscribers exist.
 	$stcr_subscribers = $wpdb->get_results(
 		"SELECT REPLACE(meta_key, '_stcr@_', '') AS email, post_id
 FROM {$wpdb->prefix}postmeta

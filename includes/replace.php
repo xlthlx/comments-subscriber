@@ -6,7 +6,7 @@
  */
 
 /**
- * Replace placeholders in body message with subscriber data and post/comment data.
+ * Replace placeholders in a body message with subscriber data and post/comment data.
  *
  * @param string $message Email message.
  * @param object $data Email data.

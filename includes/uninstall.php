@@ -15,17 +15,11 @@ function cs_plugin_uninstall() {
 }
 
 /**
- * Delete all options and 'comment_subscriber' table.
+ * Delete all options.
  *
  * @return void
  */
 function cs_uninstall() {
-	global $wpdb;
-
-	// $options = get_option( 'cs_options' );
-	// if ( ! empty( $options['delete_data'] ) ) {
-		delete_option( 'cs_options' );
-		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}comment_subscriber" );
-	// }
+	delete_option( 'cs_options' );
 }
 

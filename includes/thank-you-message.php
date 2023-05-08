@@ -6,7 +6,7 @@
  */
 
 /**
- * Send thank you message to first timers after their 1st comment is approved,
+ * Send a thank-you message to first timers after their 1st comment is approved,
  * regardless of whether they subscribe, if enabled.
  *
  * @param int $comment_id The comment ID.

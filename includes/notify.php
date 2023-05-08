@@ -28,12 +28,15 @@ function cs_notify( $comment_id ) {
 		return;
 	}
 	$email = strtolower( trim( $comment->comment_author_email ) );
+	$type = 'subscription';
 
 	$subscriptions = $wpdb->get_results(
 		$wpdb->prepare(
-			'SELECT * FROM ' . $wpdb->prefix . 'comment_subscriber 
-			WHERE post_id=%d 
-			AND email<>%s',
+			'SELECT * FROM ' . $wpdb->prefix . 'comments 
+			WHERE comment_type = %s
+            AND comment_post_ID=%d 
+			AND comment_author_email<>%s',
+			$type,
 			$post_id,
 			$email
 		)
