@@ -70,7 +70,7 @@ function cs_options_page() {
 			die( __( 'Security violated', 'comments-subscriber' ) );
 		}
 		$id = implode( ',', $_POST['s'] );
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}comment WHERE comment_type = 'subscription' AND comment_ID IN (%d)", $id ) );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription' AND comment_ID IN (%d)", $id ) );
 	}
 	?>
 	<div class="wrap">
