@@ -84,7 +84,7 @@ function cs_cleanup_prior() {
 	$wpdb->delete( $wpdb->comments, array( 'comment_approved' => 'trash' ) );
 	$wpdb->delete( $wpdb->comments, array( 'comment_approved' => 'spam' ) );
 
-	// Delete every email in the comment_subscriber table isn't valid.
+	// Delete every email that isn't valid.
 	$comment_subscribers = $wpdb->get_col( "SELECT comment_author_email FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription'" );
 	foreach ( $comment_subscribers as $email ) {
 		if ( ! cs_valid_email( $email ) ) {
