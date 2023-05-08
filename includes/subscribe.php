@@ -14,13 +14,16 @@
  */
 function cs_subscribe( $post_id, $email, $name ) {
 	global $wpdb;
+	$type = 'subscription';
 
-	// Check if user is already subscribed to this post.
+	// Check if a user is already subscribed to this post.
 	$subscribed = $wpdb->get_var(
 		$wpdb->prepare(
-			"SELECT COUNT(*) FROM {$wpdb->prefix}comment_subscriber 
-                WHERE post_id=%d 
-                  AND email=%s",
+			"SELECT COUNT(*) FROM {$wpdb->prefix}comments
+			WHERE comment_type = %s
+            AND comment_post_ID=%d
+            AND comment_author_email=%s",
+			$type,
 			$post_id,
 			$email
 		)
@@ -32,12 +35,12 @@ function cs_subscribe( $post_id, $email, $name ) {
 
 	$token = md5( mt_rand() );// The random token for unsubscription.
 	$wpdb->insert(
-		$wpdb->prefix . 'comment_subscriber',
+		$wpdb->prefix . 'comments',
 		array(
-			'post_id'      => $post_id,
-			'email'        => $email,
-			'name'         => $name,
-			'token'        => $token,
+			'comment_post_ID'      => $post_id,
+			'comment_author_email' => $email,
+			'comment_author'       => $name,
+			'comment_content'      => $token,
 		)
 	);
 }
@@ -60,7 +63,7 @@ function cs_subscribe_later( $post_id, $email, $name, $comment_id ) {
 		$wpdb->prepare(
 			"SELECT COUNT(*) FROM {$wpdb->prefix}comments
 			WHERE comment_type = %s
-			AND comment_post_ID=%d 
+			AND comment_post_ID=%d
 			AND comment_author_email=%s",
 			$type,
 			$post_id,
@@ -80,11 +83,11 @@ function cs_subscribe_later( $post_id, $email, $name, $comment_id ) {
 		$wpdb->insert(
 			$wpdb->prefix . 'comments',
 			array(
-				'comment_post_ID' => $post_id,
-				'comment_author_email'   => $email,
-				'comment_author'    => $name,
-				'comment_content'   => $token,
-				'comment_type' => $type,
+				'comment_post_ID'      => $post_id,
+				'comment_author_email' => $email,
+				'comment_author'       => $name,
+				'comment_content'      => $token,
+				'comment_type'         => $type,
 			)
 		);
 
