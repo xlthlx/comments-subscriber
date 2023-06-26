@@ -41,6 +41,7 @@ function cs_subscribe( $post_id, $email, $name ) {
 			'comment_author_email' => $email,
 			'comment_author'       => $name,
 			'comment_content'      => $token,
+			'comment_type'         => $type,
 		)
 	);
 }
