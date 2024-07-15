@@ -8,7 +8,7 @@
 /**
  * Returns the HTML for the checkbox as a string, if the checkbox is enabled.
  *
- * @return string
+ * @return void
  */
 function cs_checkbox_html() {
 	$output  = '';
@@ -23,7 +23,7 @@ function cs_checkbox_html() {
 		$output .= '/>&nbsp;<label for="comment_subscribe">' . esc_html( $options['label'] ) . '</label>
 					</p>';
 	}
-	return $output;
+	echo esc_html( $output );
 }
 
 /**
@@ -32,7 +32,7 @@ function cs_checkbox_html() {
  * @return void
  */
 function cs_comment_form() {
-	echo cs_checkbox_html();
+	cs_checkbox_html();
 }
 
 /**

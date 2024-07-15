@@ -50,4 +50,6 @@ package-lock.json
 /vendor
 
 # Project specific
-/content
+/wp-content
+/phpcs.xml.cache
+/node_modules/

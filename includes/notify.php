@@ -28,7 +28,7 @@ function cs_notify( $comment_id ) {
 		return;
 	}
 	$email = strtolower( trim( $comment->comment_author_email ) );
-	$type = 'subscription';
+	$type  = 'subscription';
 
 	$subscriptions = $wpdb->get_results(
 		$wpdb->prepare(
@@ -45,7 +45,6 @@ function cs_notify( $comment_id ) {
 	if ( ! $subscriptions ) {
 		return;
 	}
-
 
 	// Fill the message body with same for all data.
 	$post = get_post( $post_id );

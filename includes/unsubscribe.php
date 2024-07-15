@@ -25,8 +25,8 @@ function cs_unsubscribe( $id, $token ) {
 			AND comment_content=%s",
 			$type,
 			$id,
-			$token 
-		) 
+			$token
+		)
 	);
 
 }

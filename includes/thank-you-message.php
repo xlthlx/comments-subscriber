@@ -31,7 +31,7 @@ function cs_thank_you_message( $comment_id ) {
 			"SELECT COUNT(*) FROM {$wpdb->comments} 
                 WHERE `comment_approved` = '1' 
                 AND LOWER(`comment_author_email`) = %s",
-			$email 
+			$email
 		)
 	);
 

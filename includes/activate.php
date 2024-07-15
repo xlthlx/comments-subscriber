@@ -65,7 +65,7 @@ function cs_process_import_subscribers( $subscriber_data ) {
 						$data->name,
 						$data->email,
 						$token,
-						$type
+						$type,
 					)
 				)
 			);

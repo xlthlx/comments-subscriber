@@ -26,13 +26,13 @@ function cs_comment_post( $comment_id, $comment_approved ) {
 		cs_notify( $comment_id );
 
 		// If comment author subscribed, subscribe author since the comment is automatically approved.
-		if ( isset( $_REQUEST['nonce_comment'], $_POST['comment_subscribe'] ) && wp_verify_nonce( $_REQUEST['nonce_comment'], 'nonce_comment' ) ) {
+		if ( isset( $_REQUEST['nonce_comment'], $_POST['comment_subscribe'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['nonce_comment'] ) ), 'nonce_comment' ) ) {
 			cs_subscribe( $post_id, $email, $name );
 		}
 	}
 
 	// If comment goes to moderation and if comment author subscribed, add comment meta key for pending subscription.
-	if ( ( 0 === $comment_approved ) && isset( $_REQUEST['nonce_comment'], $_POST['comment_subscribe'] ) && wp_verify_nonce( $_REQUEST['nonce_comment'], 'nonce_comment' ) ) {
+	if ( ( 0 === $comment_approved ) && isset( $_REQUEST['nonce_comment'], $_POST['comment_subscribe'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['nonce_comment'] ) ), 'nonce_comment' ) ) {
 		add_comment_meta( $comment_id, 'comment_subscribe', true, true );
 	}
 

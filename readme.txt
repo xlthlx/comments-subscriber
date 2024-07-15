@@ -1,9 +1,9 @@
 === Comments Subscriber ===
 Contributors: xlthlx
 Donate link: https://paypal.me/xlthlx
-Tags: comment, comments,subscribe to comments,follow comments,notifications,subscription
+Tags: comments,subscribe,follow,notifications,subscription
 Requires at least: 5.9
-Tested up to: 6.1.1
+Tested up to: 6.6
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv3 or later

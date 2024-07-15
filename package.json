@@ -1,0 +1,13 @@
+{
+  "name": "comments-subscriber",
+  "description": "Plugin to let visitors subscribe to comments and get email notifications.",
+  "author": "xlthlx",
+  "keywords": [
+    "WordPress",
+    "Plugin"
+  ],
+  "homepage": "https://github.com/xlthlx/comment-subscriber",
+  "devDependencies": {
+    "@wordpress/env": "^10.2.0"
+  }
+}

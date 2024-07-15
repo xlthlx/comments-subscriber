@@ -63,8 +63,12 @@ function cs_init() {
 		return;
 	}
 
-	$token = $_GET['cs_t'];
-	$id    = $_GET['cs_id'];
+	if ( empty( $_GET['cs_t'] ) ) {
+		return;
+	}
+
+	$token = sanitize_key( wp_unslash( $_GET['cs_t'] ) );
+	$id    = sanitize_key( wp_unslash( $_GET['cs_id'] ) );
 
 	cs_unsubscribe( $id, $token );
 
@@ -88,7 +92,7 @@ function cs_init() {
 		$output .= '</body>
 		</html>';
 
-		echo $output;
+		echo esc_html( $output );
 	}
 
 	flush();
