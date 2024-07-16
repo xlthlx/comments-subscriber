@@ -40,7 +40,7 @@ function cs_process_import_subscribers( $subscriber_data ) {
 		if ( empty( $data->post_id ) || empty( $data->name ) || empty( $data->email ) ) {
 			continue;
 		}
-		$token = md5( mt_rand() );
+		$token = md5( wp_rand() );
 
 		// Checks for duplicates.
 		$duplicate = $wpdb->get_var(

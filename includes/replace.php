@@ -25,7 +25,7 @@ function cs_replace( $message, $data ) {
 		),
 		$message
 	);
-	$replace = strip_tags( $data->content );
+	$replace = wp_strip_all_tags( $data->content );
 	$length  = empty( $options['length'] ) ? 155 : esc_html( $options['length'] );
 
 	if ( ! is_numeric( $length ) ) {

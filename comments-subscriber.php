@@ -58,45 +58,8 @@ function cs_init() {
 
 	add_action( 'wp_set_comment_status', 'cs_set_comment_status', 10, 2 );
 	add_action( 'comment_post', 'cs_comment_post', 10, 2 );
-
-	if ( empty( $_GET['cs_id'] ) ) {
-		return;
-	}
-
-	if ( empty( $_GET['cs_t'] ) ) {
-		return;
-	}
-
-	$token = sanitize_key( wp_unslash( $_GET['cs_t'] ) );
-	$id    = sanitize_key( wp_unslash( $_GET['cs_id'] ) );
-
-	cs_unsubscribe( $id, $token );
-
-	$unsubscribe_url = empty( $options['unsubscribe_url'] ) ? '' : esc_url_raw( $options['unsubscribe_url'] );
-
-	if ( $unsubscribe_url ) {
-		header( 'Location: ' . $unsubscribe_url );
-	} else {
-		$output    = '';
-		$thank_you = empty( $options['thankyou'] ) ?
-			__( 'Your subscription has been removed. You\'ll be redirect to the home page within few seconds.', 'comments-subscriber' ) :
-			esc_html( $options['thankyou'] );
-
-		// @codingStandardsIgnoreStart
-		$output .= '<html lang="en">
-				<head><title>Thank you</title>';
-		// @codingStandardsIgnoreEnd
-		$output .= '<meta http-equiv="refresh" content="3;url=' . esc_url( get_option( 'home' ) ) . '"/>';
-		$output .= '</head><body>';
-		$output .= $thank_you;
-		$output .= '</body>
-		</html>';
-
-		echo esc_html( $output );
-	}
-
-	flush();
-	die();
+	add_action( 'init', 'cs_add_unsubscribe' );
+	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
 }
 
 /**
@@ -133,4 +96,25 @@ function cs_add_plugin_settings( $plugin_actions, $plugin_file ) {
 	}
 
 	return array_merge( $new_actions, $plugin_actions );
+}
+
+/**
+ * Add unsubscribe page or message.
+ *
+ * @return void
+ */
+function cs_add_unsubscribe() {
+	cs_unsubscribe();
+}
+
+/**
+ * Hide the subscription type comments from queries.
+ *
+ * @param array|int|null   $comment_data The comments data.
+ * @param WP_Comment_Query $query The comments query.
+ *
+ * @return void
+ */
+function hide_subscriptions_from_comments( $comment_data, $query ) {
+	$query->query_vars['type__not_in'] = 'subscription';
 }

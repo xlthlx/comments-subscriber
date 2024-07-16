@@ -33,7 +33,7 @@ function cs_subscribe( $post_id, $email, $name ) {
 		return;
 	}
 
-	$token = md5( mt_rand() );// The random token for unsubscription.
+	$token = md5( wp_rand() );
 	$wpdb->insert(
 		$wpdb->prefix . 'comments',
 		array(
@@ -80,7 +80,7 @@ function cs_subscribe_later( $post_id, $email, $name, $comment_id ) {
 	if ( $comment_id && get_comment_meta( $comment_id, 'comment_subscribe', true ) ) {
 
 		// The random token for unsubscription.
-		$token = md5( mt_rand() );
+		$token = md5( wp_rand() );
 		$wpdb->insert(
 			$wpdb->prefix . 'comments',
 			array(
