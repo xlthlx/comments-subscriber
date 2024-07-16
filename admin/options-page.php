@@ -18,6 +18,9 @@ function cs_options_page() {
 	// Save the options.
 	if ( ! empty( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-lstc-options' ) ) {
 		// @codingStandardsIgnoreStart
+		$_POST['options[message]'] = isset( $_POST['message'] ) ? $_POST['message'] : '';
+		$_POST['options[thankyou]'] = isset( $_POST['thankyou'] ) ? $_POST['thankyou'] : '';
+		$_POST['options[ty_message]'] = isset( $_POST['ty_message'] ) ? $_POST['ty_message'] : '';
         $options      = stripslashes_deep( isset( $_POST['options'] ) ? $_POST['options'] : '' );
 		// @codingStandardsIgnoreEnd
 		$sane_options = cs_sanitize_settings( $options );
@@ -61,7 +64,7 @@ function cs_options_page() {
 	// Removes a single email for all subscriptions.
 	if ( isset( $_POST['remove_email'] ) ) {
 		if ( ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'remove_email' ) ) {
-			die( esc_html__( 'Security violated', 'comments-subscriber' ) );
+			die( esc_html__( 'Nonce not verified', 'comments-subscriber' ) );
 		}
 		$email = strtolower( sanitize_email( wp_unslash( isset( $_POST['email'] ) ? $_POST['email'] : '' ) ) );
 		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription' AND comment_author_email=%s", $email ) );
@@ -69,10 +72,15 @@ function cs_options_page() {
 
 	if ( isset( $_POST['remove'] ) ) {
 		if ( ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'remove' ) ) {
-			die( esc_html__( 'Security violated', 'comments-subscriber' ) );
+			die( esc_html__( 'Nonce not verified', 'comments-subscriber' ) );
 		}
-		$id = implode( ',', sanitize_text_field( wp_unslash( isset( $_POST['s'] ) ? $_POST['s'] : '' ) ) );
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription' AND comment_ID IN (%d)", $id ) );
+
+		$ids = isset( $_POST['id'] ) ? array_map( 'sanitize_key', wp_unslash( $_POST['id'] ) ) : array();
+		if ( ! empty( $ids ) ) {
+			foreach ( $ids as $id ) {
+				wp_delete_comment( $id, true );
+			}
+		}
 	}
 	?>
 	<div class="wrap">
@@ -160,7 +168,7 @@ function cs_options_page() {
 							'teeny'         => true,
 							'editor_css'    => '<style>.wp-editor-container{width: 45%}</style>',
 						);
-						wp_editor( $options['message'], 'options[message]', $message_args );
+						wp_editor( $options['message'], 'message', $message_args );
 
 						?>
 						<p>
@@ -218,7 +226,7 @@ function cs_options_page() {
 							'quicktags'     => false,
 							'teeny'         => true,
 						);
-						wp_editor( $options['thankyou'], 'options[thankyou]', $thankyou_args );
+						wp_editor( $options['thankyou'], 'thankyou', $thankyou_args );
 
 						?>
 						<p>
@@ -267,7 +275,7 @@ function cs_options_page() {
 							'quicktags'     => false,
 							'teeny'         => true,
 						);
-						wp_editor( $options['ty_message'], 'options[ty_message]', $ty_message_args );
+						wp_editor( $options['ty_message'], 'ty_message', $ty_message_args );
 						?>
 						<p>
 						<?php
@@ -381,7 +389,7 @@ function cs_options_page() {
 						);
 						echo '<ul>';
 						foreach ( $list2 as $r2 ) {
-							echo '<li><input type="checkbox" name="s[]" value="' . esc_attr( $r2->comment_ID ) . '"/> ' . esc_html( $r2->comment_author_email ) . '</li>';
+							echo '<li><input type="checkbox" name="id[]" value="' . esc_attr( $r2->comment_ID ) . '"/> ' . esc_html( $r2->comment_author_email ) . '</li>';
 						}
 						echo '</ul>';
 						echo '<input class="button-secondary" type="submit" name="remove" value="' . esc_html__( 'Remove', 'comments-subscriber' ) . '"/>';
