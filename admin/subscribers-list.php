@@ -12,7 +12,7 @@
  */
 function cs_subscribers_list() {
 	$output = '';
-	remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+	remove_filter( 'comments_pre_query', 'cs_hide_subscription' );
 
 	$list = get_comments(
 		array(
@@ -22,14 +22,14 @@ function cs_subscribers_list() {
 		)
 	);
 
-	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+	add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
 
 	if ( ! empty( $list ) ) {
 		foreach ( $list as $r ) {
 			$comment_post_id = (int) $r->comment_post_ID;
 			$post_list       = get_post( $comment_post_id );
 
-			remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+			remove_filter( 'comments_pre_query', 'cs_hide_subscription' );
 
 			$list2 = get_comments(
 				array(
@@ -39,7 +39,7 @@ function cs_subscribers_list() {
 				)
 			);
 
-			add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+			add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
 
 			$total = count( $list2 );
 

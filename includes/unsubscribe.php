@@ -23,7 +23,7 @@ function cs_unsubscribe() {
 
 	$type = 'subscription';
 
-	remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+	remove_filter( 'comments_pre_query', 'cs_hide_subscription' );
 
 	$comments = get_comments(
 		array(
@@ -32,7 +32,7 @@ function cs_unsubscribe() {
 		)
 	);
 
-	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+	add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
 
 	foreach ( $comments as $comment ) {
 		if ( $token === $comment->comment_content ) {

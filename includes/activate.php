@@ -24,7 +24,7 @@ function cs_process_import_subscribers( $subscriber_data ) {
 			continue;
 		}
 
-		remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+		remove_filter( 'comments_pre_query', 'cs_hide_subscription' );
 
 		// Get comment author name.
 		$comment_author = get_comments(
@@ -33,7 +33,7 @@ function cs_process_import_subscribers( $subscriber_data ) {
 			)
 		);
 
-		add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+		add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
 
 		// Add the name to the array of subscriber data.
 		$subscriber_data[ $key ]->name = empty( $comment_author ) ? __( 'Subscriber', 'comments-subscriber' ) : $comment_author[0]->comment_author;
@@ -46,7 +46,7 @@ function cs_process_import_subscribers( $subscriber_data ) {
 		}
 		$token = md5( wp_rand() );
 
-		remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+		remove_filter( 'comments_pre_query', 'cs_hide_subscription' );
 
 		// Checks for duplicates.
 		$duplicate = get_comments(
@@ -57,7 +57,7 @@ function cs_process_import_subscribers( $subscriber_data ) {
 			)
 		);
 
-		add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+		add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
 
 		$type = 'subscription';
 

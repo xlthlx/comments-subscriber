@@ -60,7 +60,7 @@ function cs_init() {
 
 	add_action( 'wp_set_comment_status', 'cs_set_comment_status', 10, 2 );
 	add_action( 'comment_post', 'cs_comment_post', 10, 2 );
-	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+	add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
 }
 
 /**
@@ -107,6 +107,6 @@ function cs_add_plugin_settings( $plugin_actions, $plugin_file ) {
  *
  * @return void
  */
-function hide_subscriptions_from_comments( $comment_data, $query ) {
+function cs_hide_subscription( $comment_data, $query ) {
 	$query->query_vars['type__not_in'] = 'subscription';
 }

@@ -26,7 +26,7 @@ function cs_thank_you_message( $comment_id ) {
 	$comment = get_comment( $comment_id );
 	$email   = esc_html( strtolower( $comment->comment_author_email ) );
 
-	remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+	remove_filter( 'comments_pre_query', 'cs_hide_subscription' );
 
 	$count = get_comments(
 		array(
@@ -36,7 +36,7 @@ function cs_thank_you_message( $comment_id ) {
 		)
 	);
 
-	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+	add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
 
 	if ( 1 !== $count ) {
 		return;

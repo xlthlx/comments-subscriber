@@ -17,7 +17,7 @@
 function cs_subscribe( $post_id, $email, $name ) {
 	$type = 'subscription';
 
-	remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+	remove_filter( 'comments_pre_query', 'cs_hide_subscription' );
 
 	// Check if a user is already subscribed to this post.
 	$subscribed = get_comments(
@@ -28,7 +28,7 @@ function cs_subscribe( $post_id, $email, $name ) {
 		)
 	);
 
-	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+	add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
 
 	if ( ! empty( $subscribed ) ) {
 		return false;
@@ -68,7 +68,7 @@ function cs_subscribe_later( $post_id, $email, $name, $comment_id ) {
 		)
 	);
 
-	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+	add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
 
 	if ( ! empty( $subscribed ) ) {
 		return;

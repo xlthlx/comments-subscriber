@@ -30,7 +30,7 @@ function cs_notify( $comment_id ) {
 	$email = strtolower( trim( $comment->comment_author_email ) );
 	$type  = 'subscription';
 
-	remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+	remove_filter( 'comments_pre_query', 'cs_hide_subscription' );
 
 	$subscriptions = get_comments(
 		array(
@@ -44,7 +44,7 @@ function cs_notify( $comment_id ) {
 		return;
 	}
 
-	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+	add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
 
 	// Fill the message body with same for all data.
 	$post = get_post( $post_id );

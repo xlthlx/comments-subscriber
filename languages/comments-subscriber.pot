@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-15T08:46:34+00:00\n"
+"POT-Creation-Date: 2024-07-20T13:00:21+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: comments-subscriber\n"
 
 #. Plugin Name of the plugin
 #: comments-subscriber.php
-#: admin/admin-menu.php:15
+#: admin/admin-menu.php:14
 msgid "Comments Subscriber"
 msgstr ""
 
@@ -40,296 +40,296 @@ msgstr ""
 msgid "https://piccioni.london"
 msgstr ""
 
-#: admin/options-page.php:33
+#: admin/options-page.php:35
 msgid "Author"
 msgstr ""
 
-#: admin/options-page.php:36
+#: admin/options-page.php:38
 msgid "The post title"
 msgstr ""
 
-#: admin/options-page.php:37
+#: admin/options-page.php:39
 msgid "This is a long comment. Be a yardstick of quality. Some people are not used to an environment where excellence is expected."
 msgstr ""
 
-#: admin/options-page.php:64
-#: admin/options-page.php:72
-msgid "Security violated"
+#: admin/options-page.php:66
+#: admin/options-page.php:88
+msgid "Nonce not verified"
 msgstr ""
 
-#: admin/options-page.php:79
+#: admin/options-page.php:100
 msgid "Comments Subscriber Settings"
 msgstr ""
 
-#: admin/options-page.php:84
+#: admin/options-page.php:105
 msgid "Subscription Checkbox Configuration"
 msgstr ""
 
-#: admin/options-page.php:85
+#: admin/options-page.php:106
 msgid "Options for the \"Notify me\" subscription checkbox in the comment form."
 msgstr ""
 
-#: admin/options-page.php:89
+#: admin/options-page.php:110
 msgid "Enable The Checkbox"
 msgstr ""
 
-#: admin/options-page.php:94
+#: admin/options-page.php:115
 msgid "Check this to add the \"Notify me\" subscription checkbox to the comment form."
 msgstr ""
 
-#: admin/options-page.php:98
+#: admin/options-page.php:119
 msgid "Checkbox Label"
 msgstr ""
 
-#: admin/options-page.php:102
+#: admin/options-page.php:123
 msgid "Label to be displayed near the subscription checkbox."
 msgstr ""
 
-#: admin/options-page.php:107
+#: admin/options-page.php:128
 msgid "Checkbox Default Status"
 msgstr ""
 
-#: admin/options-page.php:112
+#: admin/options-page.php:133
 msgid "Check here if you want the \"Notify me\" subscription checkbox to be checked by default."
 msgstr ""
 
-#: admin/options-page.php:119
+#: admin/options-page.php:140
 msgid "Notification Email Settings"
 msgstr ""
 
-#: admin/options-page.php:120
+#: admin/options-page.php:141
 msgid "Configure the message sent to subscribers to notify them that a new comment was posted."
 msgstr ""
 
-#: admin/options-page.php:124
+#: admin/options-page.php:145
 msgid "From Name"
 msgstr ""
 
-#: admin/options-page.php:131
+#: admin/options-page.php:152
 msgid "From Email"
 msgstr ""
 
-#: admin/options-page.php:138
-#: admin/options-page.php:246
+#: admin/options-page.php:159
+#: admin/options-page.php:267
 msgid "Subject"
 msgstr ""
 
 #. translators: 1: Post title, 2: Subscriber name, 3: Commenter name, 4: Line break.
-#: admin/options-page.php:145
+#: admin/options-page.php:166
 msgid "Tags: %4$s %1$s - the post title %4$s %2$s - the subscriber name %4$s %3$s - the commenter name"
 msgstr ""
 
-#: admin/options-page.php:151
-#: admin/options-page.php:259
+#: admin/options-page.php:172
+#: admin/options-page.php:280
 msgid "Message Body"
 msgstr ""
 
 #. translators: 1: Subscriber name, 2: Commenter name, 3: Post title, 4: Comment text, 5: Comment link, 6: Post link, 7: Line Break
-#: admin/options-page.php:169
+#: admin/options-page.php:190
 msgid "Tags: %8$s %1$s - the subscriber name %8$s %2$s - the commenter name %8$s %3$s - the post title %8$s %4$s - the comment text (eventually truncated) %8$s %5$s - link to the comment %8$s %6$s - link to the post/page %8$s %7$s - the unsubscribe link"
 msgstr ""
 
-#: admin/options-page.php:176
+#: admin/options-page.php:197
 msgid "Comment Excerpt Length"
 msgstr ""
 
-#: admin/options-page.php:180
+#: admin/options-page.php:201
 msgid " characters"
 msgstr ""
 
-#: admin/options-page.php:182
+#: admin/options-page.php:203
 msgid "The length of the comment excerpt to be inserted in the email notification. If blank, the default is 155 characters."
 msgstr ""
 
-#: admin/options-page.php:190
+#: admin/options-page.php:211
 msgid "Unsubscribe Settings"
 msgstr ""
 
-#: admin/options-page.php:192
+#: admin/options-page.php:213
 msgid "Configure what to show to unsubscribing users. You may set an \"Unsubscribe page URL\" to send the user to a specific page, or configure a specific message."
 msgstr ""
 
-#: admin/options-page.php:197
+#: admin/options-page.php:218
 msgid "Unsubscribe Page URL"
 msgstr ""
 
-#: admin/options-page.php:203
+#: admin/options-page.php:224
 msgid "If you want to create a page with your content to say \"ok, you are unsubscribed\", enter the URL here. Otherwise, leave this field blank and the following message will be used."
 msgstr ""
 
-#: admin/options-page.php:209
+#: admin/options-page.php:230
 msgid "Unsubscribe Message"
 msgstr ""
 
-#: admin/options-page.php:225
+#: admin/options-page.php:246
 msgid "Example: You have unsubscribed successfully. Thank you. I will send you to the home page in 3 seconds."
 msgstr ""
 
-#: admin/options-page.php:233
+#: admin/options-page.php:254
 msgid "Thank You Message Settings"
 msgstr ""
 
-#: admin/options-page.php:234
+#: admin/options-page.php:255
 msgid "Configure a thank-you message for <strong>first time commentators</strong>. Messages are sent when comments are approved."
 msgstr ""
 
-#: admin/options-page.php:238
+#: admin/options-page.php:259
 msgid "Enable Thank You Message"
 msgstr ""
 
-#: admin/options-page.php:242
+#: admin/options-page.php:263
 msgid "Send a \"Thank You\" message sent to visitor on their first comment"
 msgstr ""
 
 #. translators: 1: Post title, 2: Commenter name.
-#: admin/options-page.php:253
+#: admin/options-page.php:274
 msgid "Tags: %3$s %1$s - the post title %3$s %2$s - the commenter name"
 msgstr ""
 
 #. translators: 1: Post title, 2: Commenter name, 3: Post link, 4: Comment link, 5: Comment text.
-#: admin/options-page.php:275
+#: admin/options-page.php:296
 msgid "Tags: %5$s %1$s - the post title %5$s %2$s - the commenter name %5$s %3$s - link to the post/page %5$s %6$s - link to the comment %5$s %4$s - the comment text"
 msgstr ""
 
-#: admin/options-page.php:284
+#: admin/options-page.php:305
 msgid "Theme Compatibility"
 msgstr ""
 
-#: admin/options-page.php:288
+#: admin/options-page.php:309
 msgid "Show Checkbox After The Comment Form"
 msgstr ""
 
-#: admin/options-page.php:293
+#: admin/options-page.php:314
 msgid "If the checkbox is not appearing on your comment form, enable this option. <br/>Enabling this option will make the checkbox work on a larger variety of independent themes (themes that do not use standard WordPress comment form filters). <br/>This will add the checkbox <strong>below</strong> the comment form submit button."
 msgstr ""
 
-#: admin/options-page.php:300
+#: admin/options-page.php:321
 msgid "Advanced Settings"
 msgstr ""
 
-#: admin/options-page.php:303
+#: admin/options-page.php:324
 msgid "Email address where to send test emails:"
 msgstr ""
 
-#: admin/options-page.php:311
+#: admin/options-page.php:332
 msgid "Extra email address where to send a copy of EACH notification:"
 msgstr ""
 
-#: admin/options-page.php:316
+#: admin/options-page.php:337
 msgid "Leave empty to disable."
 msgstr ""
 
-#: admin/options-page.php:321
+#: admin/options-page.php:342
 msgid "Delete Data on Uninstall"
 msgstr ""
 
-#: admin/options-page.php:325
+#: admin/options-page.php:346
 msgid "Check this box if you would like this plugin to <strong>delete all</strong> of its data when the plugin is deleted. This would delete the entire list of subscribers and their subscriptions. This does NOT delete the actual comments."
 msgstr ""
 
-#: admin/options-page.php:333
+#: admin/options-page.php:354
 msgid "Save"
 msgstr ""
 
-#: admin/options-page.php:335
+#: admin/options-page.php:356
 msgid "Save and send a Thank You test email"
 msgstr ""
 
-#: admin/options-page.php:342
+#: admin/options-page.php:363
 msgid "Email Management"
 msgstr ""
 
-#: admin/options-page.php:343
+#: admin/options-page.php:364
 msgid "Remove a specific email from all subscriptions."
 msgstr ""
 
-#: admin/options-page.php:346
+#: admin/options-page.php:367
 msgid "Remove email"
 msgstr ""
 
-#: admin/options-page.php:348
+#: admin/options-page.php:369
 msgid "Remove this email from all subscriptions."
 msgstr ""
 
-#: admin/options-page.php:355
-#: admin/options-page.php:387
+#: admin/options-page.php:376
+#: admin/subscribers-list.php:57
 msgid "Remove"
 msgstr ""
 
-#: admin/options-page.php:363
+#: admin/options-page.php:384
 msgid "Subscribers list"
 msgstr ""
 
-#: admin/options-page.php:374
+#: admin/subscribers-list.php:49
 msgid "Subscribers: "
 msgstr ""
 
-#: admin/options-page.php:390
+#: admin/subscribers-list.php:60
 msgid "There are no subscribers."
 msgstr ""
 
-#: comments-subscriber.php:82
-msgid "Your subscription has been removed. You'll be redirect to the home page within few seconds."
-msgstr ""
-
-#: comments-subscriber.php:132
+#: comments-subscriber.php:96
 msgid "Settings"
 msgstr ""
 
-#: includes/activate.php:35
+#: includes/activate.php:39
 msgid "Subscriber"
 msgstr ""
 
 #. translators: 1: Subscriber name.
-#: includes/activate.php:118
-#: includes/activate.php:144
+#: includes/activate.php:99
+#: includes/activate.php:125
 msgid "Hi %s,"
 msgstr ""
 
 #. translators: 1: Comment author, 2: Post title.
-#: includes/activate.php:121
+#: includes/activate.php:102
 msgid "%1$s has just written a new comment on \"%2$s\". Here is an excerpt:"
 msgstr ""
 
 #. translators: 1: Comment url.
-#: includes/activate.php:126
+#: includes/activate.php:107
 msgid "To read more, <a href=\"%s\">click here</a>."
 msgstr ""
 
-#: includes/activate.php:128
+#: includes/activate.php:109
 msgid "Bye"
 msgstr ""
 
 #. translators: 1: Unsubscribe url.
-#: includes/activate.php:131
+#: includes/activate.php:112
 msgid "To unsubscribe from this notification service, <a href=\"%s\">click here</a>."
 msgstr ""
 
-#: includes/activate.php:133
+#: includes/activate.php:114
 msgid "Notify me when new comments are added."
 msgstr ""
 
 #. translators: 1: Comment author, 2: Post title.
-#: includes/activate.php:136
+#: includes/activate.php:117
 msgid "A new comment from %1$s on \"%2$s\""
 msgstr ""
 
-#: includes/activate.php:137
+#: includes/activate.php:118
 msgid "Your subscription has been removed."
 msgstr ""
 
-#: includes/activate.php:138
+#: includes/activate.php:119
 msgid "You'll be redirected to the home page within a few seconds."
 msgstr ""
 
-#: includes/activate.php:141
+#: includes/activate.php:122
 msgid "Thank you for your first comment"
 msgstr ""
 
-#: includes/activate.php:146
+#: includes/activate.php:127
 msgid "I received and published your first comment on my blog on the article:"
 msgstr ""
 
-#: includes/activate.php:150
+#: includes/activate.php:131
 msgid "Have a nice day!"
+msgstr ""
+
+#: includes/unsubscribe.php:50
+msgid "Your subscription has been removed. You'll be redirect to the home page within few seconds."
 msgstr ""
