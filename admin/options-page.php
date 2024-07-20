@@ -12,8 +12,7 @@
  */
 function cs_options_page() {
 	$options = get_option( 'cs_options' );
-	global $wpdb;
-	$test = empty( $options['test'] ) ? '' : sanitize_text_field( $options['test'] );
+	$test    = empty( $options['test'] ) ? '' : sanitize_text_field( $options['test'] );
 
 	// Save the options.
 	if ( ! empty( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-lstc-options' ) ) {
@@ -67,7 +66,21 @@ function cs_options_page() {
 			die( esc_html__( 'Nonce not verified', 'comments-subscriber' ) );
 		}
 		$email = strtolower( sanitize_email( wp_unslash( isset( $_POST['email'] ) ? $_POST['email'] : '' ) ) );
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription' AND comment_author_email=%s", $email ) );
+
+		remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+
+		$comments = get_comments(
+			array(
+				'author_email' => $email,
+				'type'         => 'subscription',
+			)
+		);
+
+		add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+
+		foreach ( $comments as $comment ) {
+			wp_delete_comment( $comment, true );
+		}
 	}
 
 	if ( isset( $_POST['remove'] ) ) {
@@ -370,34 +383,7 @@ function cs_options_page() {
 			<?php wp_nonce_field( 'remove' ); ?>
 			<h2><?php esc_attr_e( 'Subscribers list', 'comments-subscriber' ); ?></h2>
 			<ul style="list-style: square;padding-left:10px">
-				<?php
-				$list = $wpdb->get_results( "SELECT DISTINCT comment_post_ID, COUNT(comment_post_ID) AS total FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription' AND comment_post_ID != 0 GROUP BY comment_post_ID ORDER BY total DESC" );
-				if ( $list ) {
-					foreach ( $list as $r ) {
-						$post_id = (int) $r->comment_post_ID;
-						$total   = (int) $r->total;
-						$post    = get_post( $post_id );
-						echo '<li><a href="' . esc_url( get_permalink( $post_id ) ) . '" target="_blank">' .
-							 esc_html( $post->post_title ) . '</a><br/>' .
-							 esc_html__( 'Subscribers: ', 'comments-subscriber' ) . esc_attr( $total ) . '</li>';
-						$list2 = $wpdb->get_results(
-							$wpdb->prepare(
-								"SELECT comment_ID,comment_author_email,comment_author FROM {$wpdb->prefix}comments WHERE comment_type = 'subscription'
-                     AND comment_post_ID=%d",
-								$post_id
-							)
-						);
-						echo '<ul>';
-						foreach ( $list2 as $r2 ) {
-							echo '<li><input type="checkbox" name="id[]" value="' . esc_attr( $r2->comment_ID ) . '"/> ' . esc_html( $r2->comment_author_email ) . '</li>';
-						}
-						echo '</ul>';
-						echo '<input class="button-secondary" type="submit" name="remove" value="' . esc_html__( 'Remove', 'comments-subscriber' ) . '"/>';
-					}
-				} else {
-					echo '<p>' . esc_html__( 'There are no subscribers.', 'comments-subscriber' ) . '</p>';
-				}
-				?>
+				<?php cs_subscribers_list(); ?>
 			</ul>
 		</form>
 	</div>

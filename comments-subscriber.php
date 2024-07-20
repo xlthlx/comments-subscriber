@@ -46,6 +46,8 @@ function cs_init() {
 
 	if ( is_admin() ) {
 		add_action( 'admin_menu', 'cs_admin_menu' );
+	} else {
+		cs_unsubscribe();
 	}
 
 	// If theme_compat is enabled, use the old filter to add checkbox after the submit button,
@@ -53,12 +55,11 @@ function cs_init() {
 	if ( empty( $options['theme_compat'] ) ) {
 		add_filter( 'comment_form_submit_field', 'cs_comment_form_submit_field', 9999 );
 	} else {
-		add_action( 'comment_form', 'cs_comment_form', 99 );
+		add_action( 'comment_form', 'cs_comment_form', 9999 );
 	}
 
 	add_action( 'wp_set_comment_status', 'cs_set_comment_status', 10, 2 );
 	add_action( 'comment_post', 'cs_comment_post', 10, 2 );
-	add_action( 'init', 'cs_add_unsubscribe' );
 	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
 }
 
@@ -96,15 +97,6 @@ function cs_add_plugin_settings( $plugin_actions, $plugin_file ) {
 	}
 
 	return array_merge( $new_actions, $plugin_actions );
-}
-
-/**
- * Add unsubscribe page or message.
- *
- * @return void
- */
-function cs_add_unsubscribe() {
-	cs_unsubscribe();
 }
 
 /**

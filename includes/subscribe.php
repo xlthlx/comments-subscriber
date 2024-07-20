@@ -9,33 +9,34 @@
  * Subscribe a user to a post.
  *
  * @param int    $post_id Post ID on which to subscribe.
- * @param string $email   User's email.
- * @param string $name    User's name.
+ * @param string $email User's email.
+ * @param string $name User's name.
+ *
+ * @return false|int
  */
 function cs_subscribe( $post_id, $email, $name ) {
-	global $wpdb;
 	$type = 'subscription';
 
+	remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+
 	// Check if a user is already subscribed to this post.
-	$subscribed = $wpdb->get_var(
-		$wpdb->prepare(
-			"SELECT COUNT(*) FROM {$wpdb->prefix}comments
-			WHERE comment_type = %s
-            AND comment_post_ID=%d
-            AND comment_author_email=%s",
-			$type,
-			$post_id,
-			$email
+	$subscribed = get_comments(
+		array(
+			'author_email' => $email,
+			'type'         => $type,
+			'post__in'     => $post_id,
 		)
 	);
 
-	if ( $subscribed > 0 ) {
-		return;
+	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
+
+	if ( 0 !== $subscribed ) {
+		return false;
 	}
 
 	$token = md5( wp_rand() );
-	$wpdb->insert(
-		$wpdb->prefix . 'comments',
+
+	return wp_insert_comment(
 		array(
 			'comment_post_ID'      => $post_id,
 			'comment_author_email' => $email,
@@ -56,21 +57,18 @@ function cs_subscribe( $post_id, $email, $name ) {
  * @param int    $comment_id Comment ID.
  */
 function cs_subscribe_later( $post_id, $email, $name, $comment_id ) {
-	global $wpdb;
 	$type = 'subscription';
 
 	// Check if a user is already subscribed to this post.
-	$subscribed = $wpdb->get_var(
-		$wpdb->prepare(
-			"SELECT COUNT(*) FROM {$wpdb->prefix}comments
-			WHERE comment_type = %s
-			AND comment_post_ID=%d
-			AND comment_author_email=%s",
-			$type,
-			$post_id,
-			$email
+	$subscribed = get_comments(
+		array(
+			'author_email' => $email,
+			'type'         => $type,
+			'post__in'     => $post_id,
 		)
 	);
+
+	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
 
 	if ( $subscribed > 0 ) {
 		return;
@@ -81,8 +79,7 @@ function cs_subscribe_later( $post_id, $email, $name, $comment_id ) {
 
 		// The random token for unsubscription.
 		$token = md5( wp_rand() );
-		$wpdb->insert(
-			$wpdb->prefix . 'comments',
+		wp_insert_comment(
 			array(
 				'comment_post_ID'      => $post_id,
 				'comment_author_email' => $email,

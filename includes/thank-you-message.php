@@ -26,14 +26,17 @@ function cs_thank_you_message( $comment_id ) {
 	$comment = get_comment( $comment_id );
 	$email   = esc_html( strtolower( $comment->comment_author_email ) );
 
-	$count = $wpdb->get_var(
-		$wpdb->prepare(
-			"SELECT COUNT(*) FROM {$wpdb->comments} 
-                WHERE `comment_approved` = '1' 
-                AND LOWER(`comment_author_email`) = %s",
-			$email
+	remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+
+	$count = get_comments(
+		array(
+			array( 'comment_status' => 1 ),
+			'author_email' => $email,
+			'count'        => true,
 		)
 	);
+
+	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
 
 	if ( 1 !== $count ) {
 		return;

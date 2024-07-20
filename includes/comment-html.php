@@ -23,7 +23,22 @@ function cs_checkbox_html() {
 		$output .= '/>&nbsp;<label for="comment_subscribe">' . esc_html( $options['label'] ) . '</label>
 					</p>';
 	}
-	return $output;
+
+	return wp_kses(
+		$output,
+		array(
+			'p'     => array(),
+			'input' => array(
+				'type'  => array(),
+				'value' => array(),
+				'name'  => array(),
+				'id'    => array(),
+			),
+			'label' => array(
+				'for' => array(),
+			),
+		)
+	);
 }
 
 /**
@@ -32,9 +47,21 @@ function cs_checkbox_html() {
  * @return void
  */
 function cs_comment_form() {
-	// @codingStandardsIgnoreStart
-	echo cs_checkbox_html();
-	// @codingStandardsIgnoreEnd
+	echo wp_kses(
+		cs_checkbox_html(),
+		array(
+			'p'     => array(),
+			'input' => array(
+				'type'  => array(),
+				'value' => array(),
+				'name'  => array(),
+				'id'    => array(),
+			),
+			'label' => array(
+				'for' => array(),
+			),
+		)
+	);
 }
 
 /**

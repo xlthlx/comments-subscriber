@@ -15,7 +15,7 @@
  * @return void
  */
 function cs_notify( $comment_id ) {
-	global $wpdb;
+
 	$options = get_option( 'cs_options' );
 	$comment = get_comment( $comment_id );
 
@@ -30,21 +30,21 @@ function cs_notify( $comment_id ) {
 	$email = strtolower( trim( $comment->comment_author_email ) );
 	$type  = 'subscription';
 
-	$subscriptions = $wpdb->get_results(
-		$wpdb->prepare(
-			'SELECT * FROM ' . $wpdb->prefix . 'comments 
-			WHERE comment_type = %s
-            AND comment_post_ID=%d 
-			AND comment_author_email<>%s',
-			$type,
-			$post_id,
-			$email
+	remove_filter( 'comments_pre_query', 'hide_subscriptions_from_comments' );
+
+	$subscriptions = get_comments(
+		array(
+			'post_id'      => $post_id,
+			'type'         => $type,
+			'hierarchical' => 'flat',
 		)
 	);
 
-	if ( ! $subscriptions ) {
+	if ( 0 === $subscriptions ) {
 		return;
 	}
+
+	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
 
 	// Fill the message body with same for all data.
 	$post = get_post( $post_id );
@@ -86,18 +86,22 @@ function cs_notify( $comment_id ) {
 
 	foreach ( $subscriptions as $subscription ) {
 
-		$m = $message;
-		$m = str_replace(
-			array( '{name}', '{unsubscribe}' ),
-			array(
-				$subscription->name,
-				$url . 'cs_id=' . $subscription->id . '&cs_t=' . $subscription->token,
-			),
-			$m
-		);
-		$s = $subject;
-		$s = str_replace( '{name}', $subscription->name, $s );
-		cs_mail( $subscription->email, $s, $m );
+		if ( strtolower( trim( $subscription->comment_author_email ) ) !== $email ) {
+
+			$m = $message;
+			$m = str_replace(
+				array( '{name}', '{unsubscribe}' ),
+				array(
+					$subscription->comment_author,
+					$url . 'cs_id=' . $subscription->comment_ID . '&cs_t=' . $subscription->comment_content,
+				),
+				$m
+			);
+			$s = $subject;
+			$s = str_replace( '{name}', $subscription->comment_author, $s );
+			cs_mail( $subscription->comment_author_email, $s, $m );
+
+		}
 	}
 }
 

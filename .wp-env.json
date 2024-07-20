@@ -5,6 +5,7 @@
   ],
   "plugins": [
     ".",
+    "https://downloads.wordpress.org/plugin/check-email.zip",
     "https://downloads.wordpress.org/plugin/plugin-check.zip",
     "https://downloads.wordpress.org/plugin/query-monitor.zip"
   ],
