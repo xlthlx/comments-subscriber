@@ -24,7 +24,7 @@ function cs_subscribers_list() {
 
 	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
 
-	if ( 0 !== $list ) {
+	if ( ! empty( $list ) ) {
 		foreach ( $list as $r ) {
 			$comment_post_id = (int) $r->comment_post_ID;
 			$post_list       = get_post( $comment_post_id );

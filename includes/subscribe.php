@@ -30,7 +30,7 @@ function cs_subscribe( $post_id, $email, $name ) {
 
 	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
 
-	if ( 0 !== $subscribed ) {
+	if ( ! empty( $subscribed ) ) {
 		return false;
 	}
 
@@ -70,7 +70,7 @@ function cs_subscribe_later( $post_id, $email, $name, $comment_id ) {
 
 	add_filter( 'comments_pre_query', 'hide_subscriptions_from_comments', 10, 2 );
 
-	if ( $subscribed > 0 ) {
+	if ( ! empty( $subscribed ) ) {
 		return;
 	}
 

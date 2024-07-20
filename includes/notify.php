@@ -40,7 +40,7 @@ function cs_notify( $comment_id ) {
 		)
 	);
 
-	if ( 0 === $subscriptions ) {
+	if ( empty( $subscriptions ) ) {
 		return;
 	}
 
