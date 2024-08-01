@@ -60,18 +60,7 @@ function cs_unsubscribe() {
 		$output .= '</body>';
 		$output .= '</html>';
 
-		echo wp_kses(
-			$output,
-			array(
-				'title' => array(),
-				'head'  => array(),
-				'meta'  => array(
-					'http-equiv' => array(),
-					'content'    => array(),
-				),
-				'p'     => array(),
-			)
-		);
+		echo wp_kses( $output, WP_KSES_DEFAULT );
 	}
 
 	die();

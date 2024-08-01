@@ -14,6 +14,39 @@
  */
 
 /**
+ * WP Kses constants.
+ */
+const WP_KSES_DEFAULT = array(
+	'strong' => array(),
+	'em'     => array(),
+	'h2'     => array(),
+	'p'      => array(),
+	'ul'     => array(),
+	'li'     => array(),
+	'br'     => array(),
+	'input'  => array(
+		'type'  => array(),
+		'name'  => array(),
+		'value' => array(),
+		'class' => array(),
+		'id'    => array(),
+	),
+	'a'      => array(
+		'href'   => array(),
+		'target' => array(),
+	),
+	'label'  => array(
+		'for' => array(),
+	),
+	'title'  => array(),
+	'head'   => array(),
+	'meta'   => array(
+		'http-equiv' => array(),
+		'content'    => array(),
+	),
+);
+
+/**
  * Includes all files from inc directory.
  */
 foreach ( glob( plugin_dir_path( __FILE__ ) . 'includes/*.php' ) as $file ) {

@@ -381,10 +381,6 @@ function cs_options_page() {
 
 		<form method="post">
 			<?php wp_nonce_field( 'remove' ); ?>
-			<h2><?php esc_attr_e( 'Subscribers list', 'comments-subscriber' ); ?></h2>
-			<ul style="list-style: square;padding-left:10px">
-				<?php cs_subscribers_list(); ?>
-			</ul>
 		</form>
 	</div>
 	<?php

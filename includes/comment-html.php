@@ -24,21 +24,7 @@ function cs_checkbox_html() {
 					</p>';
 	}
 
-	return wp_kses(
-		$output,
-		array(
-			'p'     => array(),
-			'input' => array(
-				'type'  => array(),
-				'value' => array(),
-				'name'  => array(),
-				'id'    => array(),
-			),
-			'label' => array(
-				'for' => array(),
-			),
-		)
-	);
+	return wp_kses( $output, WP_KSES_DEFAULT );
 }
 
 /**
@@ -47,21 +33,7 @@ function cs_checkbox_html() {
  * @return void
  */
 function cs_comment_form() {
-	echo wp_kses(
-		cs_checkbox_html(),
-		array(
-			'p'     => array(),
-			'input' => array(
-				'type'  => array(),
-				'value' => array(),
-				'name'  => array(),
-				'id'    => array(),
-			),
-			'label' => array(
-				'for' => array(),
-			),
-		)
-	);
+	echo wp_kses( cs_checkbox_html(), WP_KSES_DEFAULT );
 }
 
 /**
