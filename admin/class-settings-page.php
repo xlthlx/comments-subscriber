@@ -139,13 +139,29 @@ class Settings_Page {
 			$tab_one->add_tab();
 		}
 
-		$tabs = ( new Settings_Tabs() )::get_instance();
-		if ( $tabs ) {
-			$tabs->add_tab_two();
-			$tabs->add_tab_three();
-			$tabs->add_tab_four();
-			$tabs->add_tab_five();
-			$tabs->add_tab_six();
+		$tab_two = ( new Settings_Tab_Two() )::get_instance();
+		if ( $tab_two ) {
+			$tab_two->add_tab();
+		}
+
+		$tab_three = ( new Settings_Tab_Three() )::get_instance();
+		if ( $tab_three ) {
+			$tab_three->add_tab();
+		}
+
+		$tab_four = ( new Settings_Tab_Four() )::get_instance();
+		if ( $tab_four ) {
+			$tab_four->add_tab();
+		}
+
+		$tab_five = ( new Settings_Tab_Five() )::get_instance();
+		if ( $tab_five ) {
+			$tab_five->add_tab();
+		}
+
+		$tab_six = ( new Settings_Tab_Six() )::get_instance();
+		if ( $tab_six ) {
+			$tab_six->add_tab();
 		}
 	}
 }

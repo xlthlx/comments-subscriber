@@ -23,13 +23,13 @@ class Settings_Tab_One {
 	 *
 	 * @var object
 	 */
-	private $settings;
+	private $fields;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->settings = ( new Settings_Tabs() )::get_instance();
+		$this->fields = ( new Settings_Fields() )::get_instance();
 	}
 
 	/**
@@ -53,7 +53,6 @@ class Settings_Tab_One {
 	 */
 	public function add_tab() {
 		$page_slug      = 'comments-subscriber-settings-tab1';
-		$option_group   = 'comments-subscriber-settings-tab1-settings';
 		$section        = 'section_one';
 		$section_second = 'section_one_second';
 		$group          = 'cs-group-one';
@@ -62,7 +61,7 @@ class Settings_Tab_One {
 			$section,
 			__( 'Subscription Checkbox Settings', 'comments-subscriber' ),
 			array(
-				$this->settings,
+				$this->fields,
 				'add_section',
 			),
 			$page_slug,
@@ -72,13 +71,13 @@ class Settings_Tab_One {
 			)
 		);
 
-		register_setting( $option_group, $group );
+		register_setting( 'comments-subscriber-settings-tab1-settings', $group );
 
 		add_settings_field(
-			'cs-group-one[checkbox]',
+			$group . '[checkbox]',
 			__( 'Enable The Checkbox', 'comments-subscriber' ),
 			array(
-				$this->settings,
+				$this->fields,
 				'add_checkbox_field',
 			),
 			$page_slug,
@@ -91,10 +90,10 @@ class Settings_Tab_One {
 		);
 
 		add_settings_field(
-			'cs-group-one[label]',
+			$group . '[label]',
 			__( 'Checkbox Label', 'comments-subscriber' ),
 			array(
-				$this->settings,
+				$this->fields,
 				'add_text_field',
 			),
 			$page_slug,
@@ -107,10 +106,10 @@ class Settings_Tab_One {
 		);
 
 		add_settings_field(
-			'cs-group-one[checked]',
+			$group . '[checked]',
 			__( 'Checkbox Default Status', 'comments-subscriber' ),
 			array(
-				$this->settings,
+				$this->fields,
 				'add_checkbox_field',
 			),
 			$page_slug,
@@ -126,7 +125,7 @@ class Settings_Tab_One {
 			$section_second,
 			__( 'Theme Compatibility', 'comments-subscriber' ),
 			array(
-				$this->settings,
+				$this->fields,
 				'add_section',
 			),
 			$page_slug,
@@ -136,10 +135,10 @@ class Settings_Tab_One {
 		);
 
 		add_settings_field(
-			'cs-group-one[theme_compat]',
+			$group . '[theme_compat]',
 			__( 'Show Checkbox After The Comment Form', 'comments-subscriber' ),
 			array(
-				$this->settings,
+				$this->fields,
 				'add_checkbox_field',
 			),
 			$page_slug,
