@@ -14,7 +14,7 @@
  * @return void
  */
 function cs_thank_you_message( $comment_id ) {
-	global $wpdb;
+
 	$options = get_option( 'cs_options' );
 	if ( ! isset( $options['ty_enabled'] ) ) {
 		return;

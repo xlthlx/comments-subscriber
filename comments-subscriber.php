@@ -77,11 +77,13 @@ register_uninstall_hook( __FILE__, 'cs_plugin_uninstall' );
 function cs_init() {
 	$options = get_option( 'cs_options' );
 
-	if ( is_admin() ) {
-		add_action( 'admin_menu', 'cs_admin_menu' );
-	} else {
-		cs_unsubscribe();
-	}
+//	if ( is_admin() ) {
+//		add_action( 'admin_menu', 'cs_admin_menu' );
+//	} else {
+//		cs_unsubscribe();
+//	}
+
+	add_action( 'init', 'cs_unsubscribe' );
 
 	// If theme_compat is enabled, use the old filter to add checkbox after the submit button,
 	// otherwise use our standard filter.
@@ -138,8 +140,10 @@ function cs_add_plugin_settings( $plugin_actions, $plugin_file ) {
  * @param array|int|null   $comment_data The comments data.
  * @param WP_Comment_Query $query The comments query.
  *
- * @return void
+ * @return WP_Comment_Query
  */
 function cs_hide_subscription( $comment_data, $query ) {
 	$query->query_vars['type__not_in'] = 'subscription';
+
+	return $query;
 }
