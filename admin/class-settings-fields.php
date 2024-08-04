@@ -149,7 +149,7 @@ class Settings_Fields {
 	public function add_editor( $args ) {
 
 		$name  = $args['group'] . '[' . $args['name'] . ']';
-		$value = ( isset( get_option( $args['group'] )[ $args['name'] ] ) ) ? esc_attr( get_option( $args['group'] )[ $args['name'] ] ) : '';
+		$value = ( isset( get_option( $args['group'] )[ $args['name'] ] ) ) ? wp_kses_post( get_option( $args['group'] )[ $args['name'] ] ) : '';
 
 		$editor_args = array(
 			'tinymce'       => true,
@@ -160,7 +160,7 @@ class Settings_Fields {
 			'teeny'         => true,
 		);
 		echo '<style>.wp-editor-container{width: 50%}</style>';
-		wp_editor( esc_attr( $value ), esc_attr( $args['name'] ), $editor_args );
+		wp_editor( wp_kses_post( $value ), esc_attr( $args['name'] ), $editor_args );
 
 		if ( isset( $args['desc'] ) ) {
 			$this->show_desc( $args['desc'] );
@@ -183,8 +183,8 @@ class Settings_Fields {
 		}
 
 		printf(
-			wp_kses( $format, WP_KSES_DEFAULT ),
-			wp_kses( $desc, WP_KSES_DEFAULT )
+			wp_kses( $format, CS_KSES_DEFAULT ),
+			wp_kses( $desc, CS_KSES_DEFAULT )
 		);
 	}
 }

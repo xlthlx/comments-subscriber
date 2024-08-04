@@ -73,7 +73,7 @@ class Settings_Tab_Three {
 		register_setting( 'comments-subscriber-settings-tab3-settings', $group );
 
 		add_settings_field(
-			'cs-group-three[ty_enabled]',
+			$group . '[ty_enabled]',
 			__( 'Enable Thank You Message', 'comments-subscriber' ),
 			array(
 				$this->fields,
@@ -89,7 +89,7 @@ class Settings_Tab_Three {
 		);
 
 		add_settings_field(
-			'cs-group-three[ty_subject]',
+			$group . '[ty_subject]',
 			__( 'Subject', 'comments-subscriber' ),
 			array(
 				$this->fields,
@@ -105,7 +105,7 @@ class Settings_Tab_Three {
 		);
 
 		add_settings_field(
-			'cs-group-three[ty_message]',
+			$group . '[ty_message]',
 			__( 'Message Body', 'comments-subscriber' ),
 			array(
 				$this->fields,

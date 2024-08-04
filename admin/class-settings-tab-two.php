@@ -119,7 +119,7 @@ class Settings_Tab_Two {
 		);
 
 		add_settings_field(
-			$group . '[ty_message]',
+			$group . '[message]',
 			__( 'Message Body', 'comments-subscriber' ),
 			array(
 				$this->fields,
@@ -128,7 +128,7 @@ class Settings_Tab_Two {
 			$page_slug,
 			$section,
 			array(
-				'name'  => 'ty_message',
+				'name'  => 'message',
 				'group' => $group,
 				'desc'  => __( 'Tags: <br> {name} - the subscriber name <br> {author} - the commenter name <br> {title} - the post title <br> {content} - the comment text (eventually truncated) <br> {comment_link} - link to the comment <br> {link} - link to the post/page <br> {unsubscribe} - the unsubscribe link	', 'comments-subscriber' ),
 			)

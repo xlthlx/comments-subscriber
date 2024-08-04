@@ -89,7 +89,7 @@ class Subscribers_List {
 			$output .= '<p>' . esc_html__( 'There are no subscribers.', 'comments-subscriber' ) . '</p>';
 		}
 
-		echo wp_kses( $output, WP_KSES_DEFAULT );
+		echo wp_kses( $output, CS_KSES_DEFAULT );
 	}
 }
 

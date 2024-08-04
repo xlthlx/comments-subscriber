@@ -17,7 +17,6 @@ function cs_options_page() {
 	// Save the options.
 	if ( ! empty( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-lstc-options' ) ) {
 
-
 		// Maybe send a test message, if requested.
 		if ( isset( $_POST['savethankyou'] ) ) {
 			if ( ! empty( $_POST['options']['test'] ) ) {

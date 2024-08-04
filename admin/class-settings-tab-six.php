@@ -80,9 +80,9 @@ class Settings_Tab_Six {
 			$page_slug,
 			$section,
 			array(
-				'name' => 'email',
-				'group'  => $group,
-				'desc' => __( 'Remove this email from all subscriptions.', 'comments-subscriber' ),
+				'name'  => 'email',
+				'group' => $group,
+				'desc'  => __( 'Remove this email from all subscriptions.', 'comments-subscriber' ),
 			)
 		);
 	}
