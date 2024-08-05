@@ -7,6 +7,14 @@
 
 namespace Comments\Subscriber;
 
+const CS_OPTIONS = array(
+	'cs-group-one',
+	'cs-group-two',
+	'cs-group-three',
+	'cs-group-four',
+	'cs-group-five',
+);
+
 /**
  * Class Main_Hooks.
  */
@@ -81,16 +89,14 @@ class Main_Hooks {
 				$default_options               = array();
 				$default_options['ty_subject'] = __( 'Thank you for your first comment', 'comments-subscriber' );
 				$default_options['ty_message'] =
-					wp_kses_post(
 					/* translators: 1: Subscriber name. */
-						sprintf( __( 'Hi %s,', 'comments-subscriber' ), '{author}' ) .
-						"\n\n" .
-						__( 'I received and published your first comment on my blog on the article:', 'comments-subscriber' ) .
-						"\n\n" .
-						'<a href="{link}">{title}</a>' .
-						"\n\n" .
-						__( 'Have a lovely day!', 'comments-subscriber' )
-					);
+					sprintf( __( 'Hi %s,', 'comments-subscriber' ), '{author}' ) .
+					"\n\n" .
+					__( 'I received and published your first comment on my blog on the article:', 'comments-subscriber' ) .
+					"\n\n" .
+					'<a href="{link}">{title}</a>' .
+					"\n\n" .
+					__( 'Have a lovely day!', 'comments-subscriber' );
 
 				add_option( $option, $default_options );
 			}
@@ -98,7 +104,7 @@ class Main_Hooks {
 			if ( 'four' === $group[2] && empty( get_option( $option ) ) ) {
 				$default_options             = array();
 				$default_options['thankyou'] = __( 'Your subscription has been removed.', 'comments-subscriber' ) . "\n\n" .
-												 __( 'You\'ll be redirected to the home page within a few seconds.', 'comments-subscriber' );
+											   __( 'You\'ll be redirected to the home page within a few seconds.', 'comments-subscriber' );
 
 				add_option( $option, $default_options );
 			}
@@ -118,12 +124,28 @@ class Main_Hooks {
 	 * @return void
 	 */
 	public static function plugin_uninstall() {
-		// TODO check the field that set the delete all data.
-		foreach ( CS_OPTIONS as $option ) {
-			delete_option( $option );
+
+		$delete = get_option( 'cs-group-five' );
+		if ( isset( $delete['delete_data'] ) && $delete['delete_data'] ) {
+			foreach ( CS_OPTIONS as $option ) {
+				delete_option( $option );
+			}
+
+			$args = array(
+				'type' => 'subscription',
+			);
+
+			$query = ( new Get_Comments() )::get_instance();
+			if ( $query ) {
+				$comments = $query->query_comments( $args );
+
+				foreach ( $comments as $comment ) {
+					wp_delete_comment( $comment, true );
+				}
+			}
 		}
 	}
 
 }
 
-add_action( 'plugins_loaded', array( \Comments\Subscriber\Main_Hooks::class, 'get_instance' ) );
+add_action( 'plugins_loaded', array( Main_Hooks::class, 'get_instance' ) );

@@ -189,4 +189,4 @@ class Settings_Fields {
 	}
 }
 
-add_action( 'plugins_loaded', array( \Comments\Subscriber\Settings_Fields::class, 'get_instance' ) );
+add_action( 'plugins_loaded', array( Settings_Fields::class, 'get_instance' ) );

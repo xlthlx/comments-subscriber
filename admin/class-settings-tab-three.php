@@ -122,4 +122,4 @@ class Settings_Tab_Three {
 	}
 }
 
-add_action( 'plugins_loaded', array( \Comments\Subscriber\Settings_Tab_Three::class, 'get_instance' ) );
+add_action( 'plugins_loaded', array( Settings_Tab_Three::class, 'get_instance' ) );

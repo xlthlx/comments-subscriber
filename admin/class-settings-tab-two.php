@@ -153,4 +153,4 @@ class Settings_Tab_Two {
 	}
 }
 
-add_action( 'plugins_loaded', array( \Comments\Subscriber\Settings_Tab_Two::class, 'get_instance' ) );
+add_action( 'plugins_loaded', array( Settings_Tab_Two::class, 'get_instance' ) );

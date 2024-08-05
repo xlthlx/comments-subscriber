@@ -103,7 +103,9 @@ class Settings_Page {
 					echo '<form method="post">';
 					wp_nonce_field( 'remove' );
 					$list = ( new Subscribers_List() )::get_instance();
-					$list->show_subscribers_list();
+					if ( $list ) {
+						$list->show_subscribers_list();
+					}
 					echo '</form>';
 				} else {
 					submit_button( __( 'Save', 'comments-subscriber' ), 'primary large', 'save', false, array( 'id' => 'save' ) );
@@ -166,4 +168,4 @@ class Settings_Page {
 	}
 }
 
-add_action( 'plugins_loaded', array( \Comments\Subscriber\Settings_Page::class, 'get_instance' ) );
+add_action( 'plugins_loaded', array( Settings_Page::class, 'get_instance' ) );

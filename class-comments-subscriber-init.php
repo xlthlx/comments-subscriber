@@ -7,16 +7,6 @@
 
 namespace Comments\Subscriber;
 
-use WP_Comment_Query;
-
-const CS_OPTIONS = array(
-	'cs-group-one',
-	'cs-group-two',
-	'cs-group-three',
-	'cs-group-four',
-	'cs-group-five',
-);
-
 /**
  * WP KSES constants.
  */
@@ -92,16 +82,18 @@ class Comments_Subscriber_Init {
 	public function init() {
 		$options = get_option( 'cs-group-one' );
 
+		$main = ( new Main_Functions() )::get_instance();
+
 		if ( isset( $options['theme_compat'] ) && $options['theme_compat'] ) {
-			add_filter( 'comment_form_submit_field', 'cs_comment_form_submit_field', 9999 );
+			add_filter( 'comment_form_submit_field', array( $main, 'comment_form_submit_field' ), 9999 );
 		} else {
-			add_action( 'comment_form', 'cs_comment_form', 9999 );
+			add_action( 'comment_form', array( $main, 'comment_form' ), 9999 );
 		}
 
-		add_action( 'plugins_loaded', 'cs_unsubscribe' );
-		add_action( 'wp_set_comment_status', 'cs_set_comment_status', 10, 2 );
-		add_action( 'comment_post', 'cs_comment_post', 10, 2 );
-		add_filter( 'comments_pre_query', array( $this, 'hide_subscription_comments' ), 10, 2 );
+		add_action( 'plugins_loaded', array( $main, 'unsubscribe' ) );
+		add_action( 'comment_post', array( $main, 'notify_comment' ), 10, 2 );
+		add_action( 'wp_set_comment_status', array( $main, 'notify_comment_after' ), 10, 2 );
+		add_filter( 'comments_pre_query', array( $main, 'hide_subscription_comments' ), 10, 2 );
 	}
 
 	/**
@@ -140,18 +132,6 @@ class Comments_Subscriber_Init {
 		return array_merge( $new_actions, $plugin_actions );
 	}
 
-	/**
-	 * Hide the subscription type comments from queries.
-	 *
-	 * @param array|int|null   $comment_data The comments data.
-	 * @param WP_Comment_Query $query The comments query.
-	 *
-	 * @return void
-	 */
-	public function hide_subscription_comments( $comment_data, $query ) {
-		$query->query_vars['type__not_in'] = 'subscription';
-	}
-
 }
 
-add_action( 'plugins_loaded', array( \Comments\Subscriber\Comments_Subscriber_Init::class, 'get_instance' ) );
+add_action( 'plugins_loaded', array( Comments_Subscriber_Init::class, 'get_instance' ) );

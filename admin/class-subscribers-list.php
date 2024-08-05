@@ -93,4 +93,4 @@ class Subscribers_List {
 	}
 }
 
-add_action( 'plugins_loaded', array( \Comments\Subscriber\Subscribers_List::class, 'get_instance' ) );
+add_action( 'plugins_loaded', array( Subscribers_List::class, 'get_instance' ) );
