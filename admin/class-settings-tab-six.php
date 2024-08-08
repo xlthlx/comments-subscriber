@@ -86,6 +86,50 @@ class Settings_Tab_Six {
 			)
 		);
 	}
+
+	/**
+	 * Remove selected subscriptions.
+	 *
+	 * @param array $data The POST data.
+	 *
+	 * @return void
+	 */
+	public function remove_ids( $data ) {
+		$ids = isset( $data['id'] ) ? array_map( 'sanitize_key', wp_unslash( $data['id'] ) ) : array();
+		if ( ! empty( $ids ) ) {
+			foreach ( $ids as $id ) {
+				wp_delete_comment( $id, true );
+			}
+		}
+	}
+
+	/**
+	 * Removes subscriptions for email.
+	 *
+	 * @param array $data The POST data.
+	 *
+	 * @return void
+	 */
+	public function remove_email( $data ) {
+		if ( isset( $data['cs-group-six']['email'] ) ) {
+
+			$email = strtolower( sanitize_email( wp_unslash( $data['cs-group-six']['email'] ) ) );
+
+			$args = array(
+				'author_email' => $email,
+				'type'         => 'subscription',
+			);
+
+			$query = ( new Get_Comments() )::get_instance();
+			if ( $query ) {
+				$comments = $query->query_comments( $args );
+
+				foreach ( $comments as $comment ) {
+					wp_delete_comment( $comment, true );
+				}
+			}
+		}
+	}
 }
 
 add_action( 'plugins_loaded', array( Settings_Tab_Six::class, 'get_instance' ) );

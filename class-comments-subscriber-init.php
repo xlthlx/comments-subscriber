@@ -41,6 +41,17 @@ const CS_KSES_DEFAULT = array(
 );
 
 /**
+ * Options groups.
+ */
+const CS_OPTIONS = array(
+	'cs-group-one',
+	'cs-group-two',
+	'cs-group-three',
+	'cs-group-four',
+	'cs-group-five',
+);
+
+/**
  * Class Comments_Subscribers_Init.
  */
 class Comments_Subscriber_Init {
@@ -55,8 +66,8 @@ class Comments_Subscriber_Init {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'init' ) );
-		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
+		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'init', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_init', array( $this, 'plugin_settings' ) );
 	}
 
@@ -90,7 +101,7 @@ class Comments_Subscriber_Init {
 			add_action( 'comment_form', array( $main, 'comment_form' ), 9999 );
 		}
 
-		add_action( 'plugins_loaded', array( $main, 'unsubscribe' ) );
+		add_filter( 'template_redirect', array( $main, 'unsubscribe' ) );
 		add_action( 'comment_post', array( $main, 'notify_comment' ), 10, 2 );
 		add_action( 'wp_set_comment_status', array( $main, 'notify_comment_after' ), 10, 2 );
 		add_filter( 'comments_pre_query', array( $main, 'hide_subscription_comments' ), 10, 2 );

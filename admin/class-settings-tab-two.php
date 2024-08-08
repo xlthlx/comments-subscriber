@@ -70,8 +70,6 @@ class Settings_Tab_Two {
 			)
 		);
 
-		register_setting( 'comments-subscriber-settings-tab2-settings', $group );
-
 		add_settings_field(
 			$group . '[name]',
 			__( 'From Name', 'comments-subscriber' ),

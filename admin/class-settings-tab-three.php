@@ -70,8 +70,6 @@ class Settings_Tab_Three {
 			)
 		);
 
-		register_setting( 'comments-subscriber-settings-tab3-settings', $group );
-
 		add_settings_field(
 			$group . '[ty_enabled]',
 			__( 'Enable Thank You Message', 'comments-subscriber' ),

@@ -43,9 +43,7 @@ class Notify_And_Send {
 	 */
 	public function thank_you_message( $comment_id ) {
 
-		// TODO options
-
-		$options = get_option( 'cs_options' );
+		$options = get_option( 'cs-group-three' );
 		if ( ! isset( $options['ty_enabled'] ) ) {
 			return;
 		}
@@ -108,9 +106,8 @@ class Notify_And_Send {
 	 * @return string
 	 */
 	public function replace_placeholders( $message, $data ) {
-		// TODO options
 
-		$options = get_option( 'cs_options' );
+		$options = get_option( 'cs-group-two' );
 		$message = str_replace(
 			array( '{title}', '{link}', '{comment_link}', '{author}' ),
 			array(
@@ -148,13 +145,26 @@ class Notify_And_Send {
 	 */
 	public function email_send( $to, $subject, $message ) {
 
-		$options = get_option( 'cs_options' );
-		$headers = "Content-type: text/html; charset=UTF-8\n";
-		if ( ! empty( $options['name'] ) && ! empty( $options['from'] ) && $this->is_valid_email( $options['from'] ) ) {
-			$headers .= 'From: "' . $options['name'] . '" <' . $options['from'] . ">\n";
+		$options = get_option( 'cs-group-two' );
+		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+		$email = get_option( 'admin_email' );
+		$name  = get_option( 'blogname' );
+
+		if ( ! empty( $options['from'] ) && $this->is_valid_email( $options['from'] ) ) {
+			$email = $options['from'];
 		}
+
+		if ( ! empty( $options['name'] ) ) {
+			$name = $options['name'];
+		}
+
+		$headers[] = 'From: ' . $name . ' <' . $email . '>';
+		$headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
+
 		$message = wpautop( $message );
 		return wp_mail( $to, $subject, $message, $headers );
+
 	}
 
 	/**
@@ -178,10 +188,9 @@ class Notify_And_Send {
 	 */
 	public function notify_subscribers( $comment_id ) {
 
-		// TODO options, check email, query comments
-
-		$options = get_option( 'cs_options' );
-		$comment = get_comment( $comment_id );
+		$options      = get_option( 'cs-group-two' );
+		$options_five = get_option( 'cs-group-five' );
+		$comment      = get_comment( $comment_id );
 
 		if ( 'trackback' === $comment->comment_type || 'pingback' === $comment->comment_type ) {
 			return;
@@ -192,77 +201,80 @@ class Notify_And_Send {
 			return;
 		}
 		$email = strtolower( trim( $comment->comment_author_email ) );
-		$type  = 'subscription';
 
-		remove_filter( 'comments_pre_query', 'cs_hide_subscription' );
-
-		$subscriptions = get_comments(
-			array(
-				'post_id'      => $post_id,
-				'type'         => $type,
-				'hierarchical' => 'flat',
-			)
+		$args = array(
+			'post_id'      => $post_id,
+			'type'         => 'subscription',
+			'hierarchical' => 'flat',
 		);
 
-		if ( empty( $subscriptions ) ) {
-			return;
-		}
+		$query = ( new Get_Comments() )::get_instance();
+		if ( $query ) {
+			$subscriptions = $query->query_comments( $args );
 
-		add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
+			if ( empty( $subscriptions ) ) {
+				return;
+			}
 
-		$post = get_post( $post_id );
-		if ( empty( $post ) ) {
-			return;
-		}
+			$post = get_post( $post_id );
+			if ( empty( $post ) ) {
+				return;
+			}
 
-		$data               = new stdClass();
-		$data->post_id      = $post_id;
-		$data->title        = $post->post_title;
-		$data->link         = get_permalink( $post_id );
-		$data->comment_link = get_comment_link( $comment_id );
-		$comment            = get_comment( $comment_id );
-		$data->author       = $comment->comment_author;
-		$data->content      = $comment->comment_content;
-		$message            = $this->replace_placeholders( $options['message'], $data );
+			$data               = new stdClass();
+			$data->post_id      = $post_id;
+			$data->title        = $post->post_title;
+			$data->link         = get_permalink( $post_id );
+			$data->comment_link = get_comment_link( $comment_id );
+			$comment            = get_comment( $comment_id );
+			$data->author       = $comment->comment_author;
+			$data->content      = $comment->comment_content;
+			$message            = $this->replace_placeholders( $options['message'], $data );
 
-		// Fill the message subject with same for all data.
-		$subject = $options['subject'];
-		$subject = str_replace(
-			array( '{title}', '{author}' ),
-			array(
-				$post->post_title,
-				$comment->comment_author,
-			),
-			$subject
-		);
+			// Fill the message subject with same for all data.
+			$subject = $options['subject'];
+			$subject = str_replace(
+				array( '{title}', '{author}' ),
+				array(
+					$post->post_title,
+					$comment->comment_author,
+				),
+				$subject
+			);
 
-		$url = get_option( 'home' ) . '/?';
+			$url = get_option( 'home' ) . '/?';
 
-		if ( ! empty( $options['copy'] ) ) {
-			$fake            = new stdClass();
-			$fake->token     = 'fake';
-			$fake->id        = 0;
-			$fake->email     = $options['copy'];
-			$fake->name      = 'Test subscriber';
-			$subscriptions[] = $fake;
-		}
+			if ( ! empty( $options_five['copy'] ) ) {
+				$fake            = new stdClass();
+				$fake->token     = 'fake';
+				$fake->id        = 0;
+				$fake->email     = $options_five['copy'];
+				$fake->name      = get_option( 'blogname' );
+				$subscriptions[] = $fake;
+			}
 
-		foreach ( $subscriptions as $subscription ) {
+			foreach ( $subscriptions as $subscription ) {
 
-			if ( strtolower( trim( $subscription->comment_author_email ) ) !== $email ) {
+				if ( strtolower( trim( $subscription->comment_author_email ) ) !== $email ) {
 
-				$m = $message;
-				$m = str_replace(
-					array( '{name}', '{unsubscribe}' ),
-					array(
-						$subscription->comment_author,
-						$url . 'cs_id=' . $subscription->comment_ID . '&cs_t=' . $subscription->comment_content,
-					),
-					$m
-				);
-				$s = $subject;
-				$s = str_replace( '{name}', $subscription->comment_author, $s );
-				$this->email_send( $subscription->comment_author_email, $s, $m );
+					$m = $message;
+					$m = str_replace(
+						array( '{name}', '{unsubscribe}' ),
+						array(
+							$subscription->comment_author,
+							$url . 'cs_id=' . $subscription->comment_ID . '&cs_t=' . $subscription->comment_content,
+						),
+						$m
+					);
+					$s = $subject;
+					$s = str_replace( '{name}', $subscription->comment_author, $s );
+
+					$author_email = strtolower( trim( $comment->comment_author_email ) );
+
+					if ( $this->is_valid_email( $author_email ) ) {
+						$this->email_send( $author_email, $s, $m );
+					}
+				}
 			}
 		}
 	}
@@ -277,38 +289,35 @@ class Notify_And_Send {
 	 * @return false|int
 	 */
 	public function subscribe( $post_id, $email, $name ) {
-		// TODO comments query
 
-		$type = 'subscription';
-
-		remove_filter( 'comments_pre_query', 'cs_hide_subscription' );
-
-		// Check if a user is already subscribed to this post.
-		$subscribed = get_comments(
-			array(
-				'author_email' => $email,
-				'type'         => $type,
-				'post__in'     => $post_id,
-			)
+		$args = array(
+			'author_email' => $email,
+			'type'         => 'subscription',
+			'post__in'     => $post_id,
 		);
 
-		add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
+		$query = ( new Get_Comments() )::get_instance();
+		if ( $query ) {
+			$subscribed = $query->query_comments( $args );
 
-		if ( ! empty( $subscribed ) ) {
-			return false;
+			if ( ! empty( $subscribed ) ) {
+				return false;
+			}
+
+			$token = md5( wp_rand() );
+
+			return wp_insert_comment(
+				array(
+					'comment_post_ID'      => $post_id,
+					'comment_author_email' => $email,
+					'comment_author'       => $name,
+					'comment_content'      => $token,
+					'comment_type'         => 'subscription',
+				)
+			);
 		}
 
-		$token = md5( wp_rand() );
-
-		return wp_insert_comment(
-			array(
-				'comment_post_ID'      => $post_id,
-				'comment_author_email' => $email,
-				'comment_author'       => $name,
-				'comment_content'      => $token,
-				'comment_type'         => $type,
-			)
-		);
+		return false;
 	}
 
 	/**
@@ -322,45 +331,40 @@ class Notify_And_Send {
 	 */
 	public function subscribe_later( $post_id, $email, $name, $comment_id ) {
 
-		// TODO query comments
-
 		$type = 'subscription';
 
-		remove_filter( 'comments_pre_query', 'cs_hide_subscription' );
-
-		// Check if a user is already subscribed to this post.
-		$subscribed = get_comments(
-			array(
-				'author_email' => $email,
-				'type'         => $type,
-				'post__in'     => $post_id,
-			)
+		$args = array(
+			'author_email' => $email,
+			'type'         => $type,
+			'post__in'     => $post_id,
 		);
 
-		add_filter( 'comments_pre_query', 'cs_hide_subscription', 10, 2 );
+		$query = ( new Get_Comments() )::get_instance();
+		if ( $query ) {
+			$subscribed = $query->query_comments( $args );
 
-		if ( ! empty( $subscribed ) ) {
-			return;
+			if ( ! empty( $subscribed ) ) {
+				return;
+			}
+
+			// If the comment author checks the box to subscribe.
+			if ( $comment_id && get_comment_meta( $comment_id, 'comment_subscribe', true ) ) {
+
+				// The random token for unsubscription.
+				$token = md5( wp_rand() );
+				wp_insert_comment(
+					array(
+						'comment_post_ID'      => $post_id,
+						'comment_author_email' => $email,
+						'comment_author'       => $name,
+						'comment_content'      => $token,
+						'comment_type'         => $type,
+					)
+				);
+
+				delete_comment_meta( $comment_id, 'comment_subscribe' );
+			}
 		}
-
-		// If the comment author checks the box to subscribe.
-		if ( $comment_id && get_comment_meta( $comment_id, 'comment_subscribe', true ) ) {
-
-			// The random token for unsubscription.
-			$token = md5( wp_rand() );
-			wp_insert_comment(
-				array(
-					'comment_post_ID'      => $post_id,
-					'comment_author_email' => $email,
-					'comment_author'       => $name,
-					'comment_content'      => $token,
-					'comment_type'         => $type,
-				)
-			);
-
-			delete_comment_meta( $comment_id, 'comment_subscribe' );
-		}
-
 	}
 
 }

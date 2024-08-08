@@ -7,6 +7,8 @@
 
 namespace Comments\Subscriber;
 
+use stdClass;
+
 /**
  * Class Settings_Tab_Five.
  */
@@ -17,19 +19,25 @@ class Settings_Tab_Five {
 	 * @var object
 	 */
 	private static $_instance;
-
 	/**
 	 * A reference for the settings.
 	 *
 	 * @var object
 	 */
 	private $fields;
+	/**
+	 * A reference for Notify_And_Send class.
+	 *
+	 * @var object
+	 */
+	private $notify;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->fields = ( new Settings_Fields() )::get_instance();
+		$this->notify = ( new Notify_And_Send() )::get_instance();
 	}
 
 	/**
@@ -69,8 +77,6 @@ class Settings_Tab_Five {
 					__( 'Configure the message sent to subscribers to notify them that a new comment was posted.', 'comments-subscriber' ),
 			)
 		);
-
-		register_setting( 'comments-subscriber-settings-tab5-settings', $group );
 
 		add_settings_field(
 			$group . '[test]',
@@ -118,6 +124,40 @@ class Settings_Tab_Five {
 				'desc'  => __( 'Check this box if you would like this plugin to <strong>delete all</strong> of its data when the plugin is deleted. <br/>This would delete the entire list of subscribers and their subscriptions. This does NOT delete the actual comments.', 'comments-subscriber' ),
 			)
 		);
+	}
+
+	/**
+	 * Send test email.
+	 *
+	 * @param array $data The POST data.
+	 *
+	 * @return void
+	 */
+	public function send_test_email( $data ) {
+		$options = get_option( 'cs-group-three' );
+
+		if ( isset( $data['savethankyou'] ) && ! empty( $data['cs-group-five']['test'] ) ) {
+			$test = sanitize_email( wp_unslash( $data['cs-group-five']['test'] ) );
+
+			$ty_message            = empty( $options['ty_message'] ) ? '' : $options['ty_message'];
+			$cs_data               = new stdClass();
+			$cs_data->author       = esc_html__( 'Author', 'comments-subscriber' );
+			$cs_data->link         = get_option( 'home' );
+			$cs_data->comment_link = get_option( 'home' );
+			$cs_data->title        = esc_html__( 'The post title', 'comments-subscriber' );
+			$cs_data->content      = esc_html__( 'This is a long comment. Be a yardstick of quality. Some people are not used to an environment where excellence is expected.', 'comments-subscriber' );
+			$message               = $this->notify->replace_placeholders( $ty_message, $cs_data );
+			$subject               = $options['ty_subject'];
+			$subject               = str_replace(
+				array( '{title}', '{author}' ),
+				array(
+					$cs_data->title,
+					$cs_data->author,
+				),
+				$subject
+			);
+			$this->notify->email_send( $test, $subject, $message );
+		}
 	}
 }
 

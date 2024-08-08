@@ -17,6 +17,18 @@ class Settings_Page {
 	 * @var object
 	 */
 	private static $_instance;
+	/**
+	 * Reference to Settings_Tab_Five class.
+	 *
+	 * @var object
+	 */
+	private $tab_five;
+	/**
+	 * Reference to Settings_Tab_Six class.
+	 *
+	 * @var object
+	 */
+	private $tab_six;
 
 	/**
 	 * Constructor.
@@ -24,6 +36,8 @@ class Settings_Page {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
 		add_action( 'admin_menu', array( $this, 'page_init' ) );
+		$this->tab_five = ( new Settings_Tab_Five() )::get_instance();
+		$this->tab_six  = ( new Settings_Tab_Six() )::get_instance();
 	}
 
 	/**
@@ -60,6 +74,28 @@ class Settings_Page {
 	 */
 	public function create_settings_page() {
 
+		if ( ! empty( $_POST['_update-form'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_update-form'] ) ), 'update-form' ) ) {
+
+			if ( isset( $_POST['cs-group-five'] ) ) {
+				$this->tab_five->send_test_email( $_POST );
+			}
+
+			if ( isset( $_POST['cs-group-six'] ) ) {
+				$this->tab_six->remove_ids( $_POST );
+				$this->tab_six->remove_email( $_POST );
+			}
+
+			foreach ( CS_OPTIONS as $option ) {
+				if ( isset( $_POST[ $option ] ) ) {
+					update_option( $option, $this->sanitize_settings( array_map( 'wp_kses_post', wp_unslash( $_POST[ $option ] ) ) ) );
+				}
+			}
+
+			add_settings_error( 'cs-messages', 'cs-message', __( 'Settings saved.', 'comments-subscriber' ), 'updated' );
+		}
+
+		settings_errors( 'cs-messages' );
+
 		?>
 		<div class="wrap">
 		<h1 style="margin-bottom: 9px;"><?php echo esc_attr( get_admin_page_title() ); ?></h1>
@@ -73,9 +109,8 @@ class Settings_Page {
 			'tab6' => __( 'Subscribers list', 'comments-subscriber' ),
 		);
 		$current_tab = isset( $_GET['tab'], $tabs[ $_GET['tab'] ] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : array_key_first( $tabs );
-		$action      = 'options.php';
 		?>
-		<form method="post" action="<?php echo esc_attr( $action ); ?>">
+		<form method="post">
 			<nav class="nav-tab-wrapper">
 				<?php
 				foreach ( $tabs as $tab => $name ) {
@@ -93,22 +128,21 @@ class Settings_Page {
 			</nav>
 			<div class="wrap" style="margin-top: 30px;">
 				<?php
+				wp_nonce_field( 'update-form', '_update-form' );
 				settings_fields( 'comments-subscriber-settings-' . $current_tab . '-settings' );
 				do_settings_sections( 'comments-subscriber-settings-' . $current_tab );
 
 				echo '<p class="submit">';
 				if ( 'tab6' === $current_tab ) {
 					submit_button( __( 'Remove', 'comments-subscriber' ), 'primary large', 'remove_email', false, array( 'id' => 'remove_email' ) );
-					echo '</p>';
-					echo '<form method="post">';
-					wp_nonce_field( 'remove' );
+
 					$list = ( new Subscribers_List() )::get_instance();
 					if ( $list ) {
 						$list->show_subscribers_list();
 					}
-					echo '</form>';
 				} else {
 					submit_button( __( 'Save', 'comments-subscriber' ), 'primary large', 'save', false, array( 'id' => 'save' ) );
+
 					if ( 'tab5' === $current_tab ) {
 						submit_button(
 							__( 'Save and send a Thank You test email', 'comments-subscriber' ),
@@ -121,8 +155,9 @@ class Settings_Page {
 							)
 						);
 					}
-					echo '</p>';
 				}
+
+				echo '</p>';
 				?>
 			</div>
 		</form>
@@ -165,6 +200,65 @@ class Settings_Page {
 		if ( $tab_six ) {
 			$tab_six->add_tab();
 		}
+	}
+
+	/**
+	 * Sanitize settings before saving.
+	 *
+	 * @param array $options The array of options to be saved.
+	 *
+	 * @return array
+	 */
+	public function sanitize_settings( $options ) {
+		// Integers.
+		$int_keys = array(
+			'checkbox',
+			'checked',
+			'ty_enabled',
+			'delete_data',
+			'theme_compat',
+		);
+		foreach ( $int_keys as $int_key ) {
+			if ( isset( $options[ $int_key ] ) ) {
+				$options[ $int_key ] = (int) $options[ $int_key ];
+			}
+		}
+		// Text.
+		$text_keys = array(
+			'label',
+			'name',
+			'subject',
+			'unsubscribe_url',
+			'ty_subject',
+			'copy',
+		);
+		foreach ( $text_keys as $text_key ) {
+			if ( isset( $options[ $text_key ] ) ) {
+				$options[ $text_key ] = sanitize_text_field( $options[ $text_key ] );
+			}
+		}
+		// Emails.
+		if ( isset( $options['from'] ) ) {
+			$options['from'] = sanitize_email( $options['from'] );
+		}
+
+		if ( isset( $options['test'] ) ) {
+			$options['test'] = sanitize_email( $options['test'] );
+		}
+
+		// WYSIWYG.
+		$text_keys = array(
+			'message',
+			'ty_message',
+			'thankyou',
+		);
+		foreach ( $text_keys as $text_key ) {
+			if ( isset( $options[ $text_key ] ) ) {
+				$options[ $text_key ] = wp_kses_post( $options[ $text_key ] );
+			}
+		}
+
+		return $options;
 	}
 }
 

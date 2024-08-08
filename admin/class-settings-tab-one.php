@@ -71,8 +71,6 @@ class Settings_Tab_One {
 			)
 		);
 
-		register_setting( 'comments-subscriber-settings-tab1-settings', $group );
-
 		add_settings_field(
 			$group . '[checkbox]',
 			__( 'Enable The Checkbox', 'comments-subscriber' ),

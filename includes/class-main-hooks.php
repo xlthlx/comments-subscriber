@@ -7,14 +7,6 @@
 
 namespace Comments\Subscriber;
 
-const CS_OPTIONS = array(
-	'cs-group-one',
-	'cs-group-two',
-	'cs-group-three',
-	'cs-group-four',
-	'cs-group-five',
-);
-
 /**
  * Class Main_Hooks.
  */

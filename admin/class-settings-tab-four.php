@@ -70,8 +70,6 @@ class Settings_Tab_Four {
 			)
 		);
 
-		register_setting( 'comments-subscriber-settings-tab4-settings', $group );
-
 		add_settings_field(
 			$group . '[unsubscribe_url]',
 			__( 'Unsubscribe Page URL', 'comments-subscriber' ),

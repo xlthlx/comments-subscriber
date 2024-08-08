@@ -64,9 +64,10 @@ class Main_Functions {
 	 * @return string
 	 */
 	public function checkbox_html() {
-		// TODO options
+
 		$output  = '';
-		$options = get_option( 'cs_options' );
+		$options = get_option( 'cs-group-one' );
+
 		if ( ! empty( $options['checkbox'] ) ) {
 			$output .= wp_nonce_field( 'nonce_comment', 'nonce_comment', true, false );
 			$output .= '<p id="cs-comment-subscription">
@@ -97,56 +98,61 @@ class Main_Functions {
 	 */
 	public function unsubscribe() {
 
-		$token = isset( $_GET['cs_t'] ) ? sanitize_key( wp_unslash( $_GET['cs_t'] ) ) : '';
-		$id    = isset( $_GET['cs_id'] ) ? sanitize_key( wp_unslash( $_GET['cs_id'] ) ) : '';
+		if ( is_home() || is_front_page() ) {
 
-		if ( '' === $token || '' === $id ) {
-			return;
-		}
+			// @codingStandardsIgnoreStart
+			$token = isset( $_GET['cs_t'] ) ? sanitize_key( wp_unslash( $_GET['cs_t'] ) ) : '';
+			$id    = isset( $_GET['cs_id'] ) ? sanitize_key( wp_unslash( $_GET['cs_id'] ) ) : '';
+			// @codingStandardsIgnoreEnd
 
-		$args = array(
-			'comment__in' => array( $id ),
-			'type'        => 'subscription',
-		);
+			if ( '' === $token || '' === $id ) {
+				return;
+			}
 
-		$query = ( new Get_Comments() )::get_instance();
-		if ( $query ) {
-			$comments = $query->query_comments( $args );
+			$args = array(
+				'comment__in' => array( $id ),
+				'type'        => 'subscription',
+			);
 
-			foreach ( $comments as $comment ) {
-				if ( $token === $comment->comment_content ) {
-					wp_delete_comment( $comment, true );
+			$query = ( new Get_Comments() )::get_instance();
+			if ( $query ) {
+				$comments = $query->query_comments( $args );
+
+				foreach ( $comments as $comment ) {
+					if ( $token === $comment->comment_content ) {
+						wp_delete_comment( $comment, true );
+					}
 				}
 			}
-		}
 
-		$options = get_option( 'cs-group-four' );
+			$options = get_option( 'cs-group-four' );
 
-		if ( isset( $options['unsubscribe_url'] ) && $options['unsubscribe_url'] ) {
-			wp_safe_redirect( esc_url_raw( $options['unsubscribe_url'] ) );
-		} else {
+			if ( isset( $options['unsubscribe_url'] ) && $options['unsubscribe_url'] ) {
+				wp_safe_redirect( esc_url_raw( $options['unsubscribe_url'] ) );
+			} else {
 
-			$output    = '';
-			$thank_you = __( 'Your subscription has been removed. You\'ll be redirect to the home page within few seconds.', 'comments-subscriber' );
+				$output    = '';
+				$thank_you = wp_unslash( __( 'Your subscription has been removed. You will be redirect to the home page within few seconds.', 'comments-subscriber' ) );
 
-			if ( isset( $options['thankyou'] ) && $options['thankyou'] ) {
-				$thank_you = wp_kses_post( $options['thankyou'] );
+				if ( isset( $options['thankyou'] ) && $options['thankyou'] ) {
+					$thank_you = wp_kses_post( wp_unslash( $options['thankyou'] ) );
+				}
+
+				$output .= '<html lang="en">';
+				$output .= '<head>
+<title>Thank you</title>';
+				$output .= '<meta http-equiv="refresh" content="10;url=' . esc_url( get_option( 'home' ) ) . '"/>';
+				$output .= '</head>';
+				$output .= '<body>';
+				$output .= '<p>' . $thank_you . '</p>';
+				$output .= '</body>';
+				$output .= '</html>';
+
+				echo wp_kses( $output, CS_KSES_DEFAULT );
 			}
 
-			$output .= '<html lang="en">';
-			$output .= '<head>
-<title>Thank you</title>';
-			$output .= '<meta http-equiv="refresh" content="10;url=' . esc_url( get_option( 'home' ) ) . '"/>';
-			$output .= '</head>';
-			$output .= '<body>';
-			$output .= '<p>' . $thank_you . '</p>';
-			$output .= '</body>';
-			$output .= '</html>';
-
-			echo wp_kses( $output, CS_KSES_DEFAULT );
+			die();
 		}
-
-		die();
 	}
 
 	/**
@@ -156,7 +162,6 @@ class Main_Functions {
 	 * @param string $status     New comment status, either 'hold', 'approve', 'spam', or 'trash'.
 	 */
 	public function notify_comment_after( $comment_id, $status ) {
-		// TODO check email
 
 		// Get original comment info.
 		$comment = get_comment( $comment_id );
@@ -182,7 +187,6 @@ class Main_Functions {
 	 * @param int|string $comment_approved 1 if the comment is approved, 0 if not, 'spam' if spam.
 	 */
 	public function notify_comment( $comment_id, $comment_approved ) {
-		// TODO check email
 
 		$comment = get_comment( $comment_id );
 		$name    = $comment->comment_author;
