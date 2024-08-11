@@ -109,6 +109,8 @@ class Main_Functions {
 				return;
 			}
 
+			$unsubscribed = false;
+
 			$args = array(
 				'comment__in' => array( $id ),
 				'type'        => 'subscription',
@@ -121,35 +123,41 @@ class Main_Functions {
 				foreach ( $comments as $comment ) {
 					if ( $token === $comment->comment_content ) {
 						wp_delete_comment( $comment, true );
+						$unsubscribed = true;
 					}
 				}
 			}
 
 			$options = get_option( 'cs-group-four' );
+			$thank_you = '';
 
-			if ( isset( $options['unsubscribe_url'] ) && $options['unsubscribe_url'] ) {
-				wp_safe_redirect( esc_url_raw( $options['unsubscribe_url'] ) );
+			if ( $unsubscribed ) {
+				$thank_you = wp_unslash( __( 'You are already unsubscribed. You will be redirect to the home page within few seconds.', 'comments-subscriber' ) );
+
 			} else {
 
-				$output    = '';
-				$thank_you = wp_unslash( __( 'Your subscription has been removed. You will be redirect to the home page within few seconds.', 'comments-subscriber' ) );
+				if ( isset( $options['unsubscribe_url'] ) && $options['unsubscribe_url'] ) {
+					wp_safe_redirect( esc_url_raw( $options['unsubscribe_url'] ) );
+				} else {
 
-				if ( isset( $options['thankyou'] ) && $options['thankyou'] ) {
-					$thank_you = wp_kses_post( wp_unslash( $options['thankyou'] ) );
+					$thank_you = wp_unslash( __( 'Your subscription has been removed. You will be redirect to the home page within few seconds.', 'comments-subscriber' ) );
+
+					if ( isset( $options['thankyou'] ) && $options['thankyou'] ) {
+						$thank_you = wp_kses_post( wp_unslash( $options['thankyou'] ) );
+					}
 				}
-
-				$output .= '<html lang="en">';
-				$output .= '<head>
-<title>Thank you</title>';
-				$output .= '<meta http-equiv="refresh" content="10;url=' . esc_url( get_option( 'home' ) ) . '"/>';
-				$output .= '</head>';
-				$output .= '<body>';
-				$output .= '<p>' . $thank_you . '</p>';
-				$output .= '</body>';
-				$output .= '</html>';
-
-				echo wp_kses( $output, CS_KSES_DEFAULT );
 			}
+
+			$output  = '<html lang="en">';
+			$output .= '<head><title>Thank you</title>';
+			$output .= '<meta http-equiv="refresh" content="5;url=' . esc_url( get_option( 'home' ) ) . '"/>';
+			$output .= '</head>';
+			$output .= '<body>';
+			$output .= '<p>' . $thank_you . '</p>';
+			$output .= '</body>';
+			$output .= '</html>';
+
+			echo wp_kses( $output, CS_KSES_DEFAULT );
 
 			die();
 		}

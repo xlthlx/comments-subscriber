@@ -1,7 +1,7 @@
 === Comments Subscriber ===
 Contributors: xlthlx
 Donate link: https://paypal.me/xlthlx
-Tags: comments,subscribe,follow,notifications,subscription
+Tags: comments,subscribe,follow,notifications
 Requires at least: 5.9
 Tested up to: 6.6
 Requires PHP: 7.4
@@ -18,7 +18,7 @@ They will then be notified by email when others comment on the same post. Works 
 
 == Languages ==
 
-English, Italian.
+English.
 
 == Installation ==
 
@@ -34,7 +34,13 @@ Yes, just use the .POT file in the `languages` folder.
 
 == Screenshots ==
 
-1. Options
+1. Comments form checkbox
+2. Checkbox settings
+3. Notification email settings
+4. Thank you email settings
+5. Unsubscribe settings
+6. Advanced settings
+7. Subscribers list
 
 == Changelog ==
 

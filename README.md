@@ -1,8 +1,11 @@
-# Comments Subscriber
+# ![Comments Subscriber](assets/banner.png "WordPress Plugin")
+
+[![Version](https://img.shields.io/badge/version-1.0.0-blueviolet)](https://plugintests.com/plugins/wporg/comments-subscriber/latest) [![License](https://img.shields.io/badge/license-GPL_v3-blueviolet)](https://github.com/xlthlx/comments-subscriber/blob/main/LICENSE)
+
 
 **Contributors:** xlthlx \
 **Donate link:** https://paypal.me/xlthlx \
-**Tags:** comments,subscribe,follow,notifications,subscription \
+**Tags:** comments,subscribe,follow,notifications \
 **Requires at least:** 5.9 \
 **Tested up to:** 6.6 \
 **Requires PHP:** 7.4 \
@@ -19,7 +22,7 @@ They will then be notified by email when others comment on the same post. Works 
 
 ## Languages
 
-English, Italian.
+English.
 
 ## Installation
 
@@ -35,9 +38,33 @@ Yes, just use the .POT file in the `languages` folder.
 
 ## Screenshots
 
-### 1. Options
+### 1. Comments form checkbox
 
-[missing image]
+![Comments form checkbox](assets/screenshot-1.jpg)
+
+### 2. Checkbox settings
+
+![Checkbox settings](assets/screenshot-2.jpg)
+
+### 3. Notification email settings
+
+![Notification email settings](assets/screenshot-3.jpg)
+
+### 4. Thank you email settings
+
+![Thank you email settings](assets/screenshot-4.jpg)
+
+### 5. Unsubscribe settings
+
+![Unsubscribe settings](assets/screenshot-5.jpg)
+
+### 6. Advanced settings
+
+![Advanced settings](assets/screenshot-6.jpg)
+
+### 7. Subscribers list
+
+![Subscribers list](assets/screenshot-7.jpg)
 
 
 ## Changelog

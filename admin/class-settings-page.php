@@ -61,7 +61,7 @@ class Settings_Page {
 
 		add_options_page(
 			__( 'Comments Subscriber Settings', 'comments-subscriber' ),
-			__( 'Subscriber Settings', 'comments-subscriber' ),
+			__( 'Comments Settings', 'comments-subscriber' ),
 			'manage_options',
 			'comments-subscriber-settings',
 			array( $this, 'create_settings_page' )

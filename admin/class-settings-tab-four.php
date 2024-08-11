@@ -98,7 +98,7 @@ class Settings_Tab_Four {
 			array(
 				'name'  => 'thankyou',
 				'group' => $group,
-				'desc'  => __( 'Example: You have unsubscribed successfully. Thank you. I will send you to the home page in 3 seconds.', 'comments-subscriber' ),
+				'desc'  => __( 'Example: Your subscription has been removed. You\'ll be redirect to the home page within few seconds.', 'comments-subscriber' ),
 			)
 		);
 	}
