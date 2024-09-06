@@ -13,6 +13,8 @@
  * @package comments_subscriber
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 /**
  * Includes plugin init.
  */
