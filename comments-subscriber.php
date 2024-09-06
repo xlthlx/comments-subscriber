@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Comments Subscriber
- * Plugin URI: https://github.com/xlthlx/comment-subscriber
+ * Plugin URI: https://github.com/xlthlx/comments-subscriber
  * Description: Plugin to let visitors subscribe to comments and get email notifications.
  * Version: 1.0.0
  * Author: xlthlx
