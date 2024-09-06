@@ -128,7 +128,7 @@ class Main_Functions {
 				}
 			}
 
-			$options = get_option( 'cs-group-four' );
+			$options   = get_option( 'cs-group-four' );
 			$thank_you = '';
 
 			if ( $unsubscribed ) {
