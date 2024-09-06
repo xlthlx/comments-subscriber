@@ -159,7 +159,6 @@ class Settings_Fields {
 			'quicktags'     => false,
 			'teeny'         => true,
 		);
-		echo '<style>.wp-editor-container{width: 50%}</style>';
 		wp_editor( wp_kses_post( $value ), esc_attr( $args['name'] ), $editor_args );
 
 		if ( isset( $args['desc'] ) ) {
