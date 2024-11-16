@@ -1,6 +1,6 @@
 # ![Comments Subscriber](assets/banner.png "WordPress Plugin")
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blueviolet)](https://plugintests.com/plugins/wporg/comments-subscriber/latest) [![License](https://img.shields.io/badge/license-GPL_v3-blueviolet)](https://github.com/xlthlx/comments-subscriber/blob/main/LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.1-blueviolet)](https://plugintests.com/plugins/wporg/comments-subscriber/latest) [![License](https://img.shields.io/badge/license-GPL_v3-blueviolet)](https://github.com/xlthlx/comments-subscriber/blob/main/LICENSE)
 
 
 **Contributors:** xlthlx \
