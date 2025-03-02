@@ -70,13 +70,11 @@ class Main_Functions {
 
 		if ( ! empty( $options['checkbox'] ) ) {
 			$output .= wp_nonce_field( 'nonce_comment', 'nonce_comment', true, false );
-			$output .= '<p id="cs-comment-subscription">
-					<input type="checkbox" value="1" name="comment_subscribe" id="comment_subscribe"';
-			if ( ! empty( $options['checked'] ) ) {
-				$output .= ' checked="checked"';
-			}
-			$output .= '/>&nbsp;<label for="comment_subscribe">' . esc_html( $options['label'] ) . '</label>
-					</p>';
+			$output .= '<p id="cs-comment-subscription">';
+			$output .= '<input type="checkbox" value="1" name="comment_subscribe" id="comment_subscribe" ';
+			$output .= isset ( $options['checked'] ) ? 'checked="checked" ' : '';
+			$output .= '>&nbsp;<label for="comment_subscribe">' . esc_html( $options['label'] ) . '</label>';
+			$output .= '</p>';
 		}
 
 		return wp_kses( $output, CS_KSES_DEFAULT );

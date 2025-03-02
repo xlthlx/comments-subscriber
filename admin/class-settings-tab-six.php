@@ -95,10 +95,12 @@ class Settings_Tab_Six {
 	 * @return void
 	 */
 	public function remove_ids( $data ) {
-		$ids = isset( $data['id'] ) ? array_map( 'sanitize_key', wp_unslash( $data['id'] ) ) : array();
-		if ( ! empty( $ids ) ) {
-			foreach ( $ids as $id ) {
-				wp_delete_comment( $id, true );
+		if ( isset( $data['remove'] ) && ( 'Remove' === $data['remove'] ) ) {
+			$ids = isset( $data['cs-group-six']['id'] ) ? array_map( 'sanitize_key', wp_unslash( $data['cs-group-six']['id'] ) ) : array();
+			if ( ! empty( $ids ) ) {
+				foreach ( $ids as $id ) {
+					wp_delete_comment( $id, true );
+				}
 			}
 		}
 	}
@@ -111,7 +113,7 @@ class Settings_Tab_Six {
 	 * @return void
 	 */
 	public function remove_email( $data ) {
-		if ( isset( $data['cs-group-six']['email'] ) ) {
+		if ( isset( $data['remove_email'], $data['cs-group-six']['email'] ) && ( 'Remove' === $data['remove'] ) ) {
 
 			$email = strtolower( sanitize_email( wp_unslash( $data['cs-group-six']['email'] ) ) );
 

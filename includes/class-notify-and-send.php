@@ -19,6 +19,7 @@ class Notify_And_Send {
 	 * @var object
 	 */
 	private static $_instance;
+
 	/**
 	 * Method used to provide a single instance of this class.
 	 *
@@ -131,6 +132,7 @@ class Notify_And_Send {
 				$replace = substr( $replace, 0, $x ) . '...';
 			}
 		}
+
 		return str_replace( '{content}', $replace, $message );
 	}
 
@@ -163,6 +165,7 @@ class Notify_And_Send {
 		$headers[] = 'Reply-To: ' . $name . ' <' . $email . '>';
 
 		$message = wpautop( $message );
+
 		return wp_mail( $to, $subject, $message, $headers );
 
 	}
@@ -200,7 +203,7 @@ class Notify_And_Send {
 		if ( empty( $post_id ) ) {
 			return;
 		}
-		$email = strtolower( trim( $comment->comment_author_email ) );
+		$author_email = strtolower( trim( $comment->comment_author_email ) );
 
 		$args = array(
 			'post_id'      => $post_id,
@@ -244,18 +247,21 @@ class Notify_And_Send {
 
 			$url = get_option( 'home' ) . '/?';
 
+			// Set up the copy email if the options is set.
 			if ( ! empty( $options_five['copy'] ) ) {
-				$fake            = new stdClass();
-				$fake->token     = 'fake';
-				$fake->id        = 0;
-				$fake->email     = $options_five['copy'];
-				$fake->name      = get_option( 'blogname' );
-				$subscriptions[] = $fake;
+				$copy            = new stdClass();
+				$copy->token     = 'fake';
+				$copy->id        = 0;
+				$copy->email     = $options_five['copy'];
+				$copy->name      = get_option( 'blogname' );
+				$subscriptions[] = $copy;
 			}
 
 			foreach ( $subscriptions as $subscription ) {
 
-				if ( strtolower( trim( $subscription->comment_author_email ) ) !== $email ) {
+				$to = strtolower( trim( $subscription->comment_author_email ) );
+
+				if ( $to !== $author_email ) {
 
 					$m = $message;
 					$m = str_replace(
@@ -269,10 +275,8 @@ class Notify_And_Send {
 					$s = $subject;
 					$s = str_replace( '{name}', $subscription->comment_author, $s );
 
-					$author_email = strtolower( trim( $comment->comment_author_email ) );
-
-					if ( $this->is_valid_email( $author_email ) ) {
-						$this->email_send( $author_email, $s, $m );
+					if ( $this->is_valid_email( $to ) ) {
+						$this->email_send( $to, $s, $m );
 					}
 				}
 			}
@@ -282,7 +286,7 @@ class Notify_And_Send {
 	/**
 	 * Subscribe a user to a post.
 	 *
-	 * @param int    $post_id Post ID on which to subscribe.
+	 * @param int $post_id Post ID on which to subscribe.
 	 * @param string $email User's email.
 	 * @param string $name User's name.
 	 *
@@ -324,10 +328,10 @@ class Notify_And_Send {
 	 * Subscribe a comment author to a post after his comment has
 	 * been held in moderation and is finally approved.
 	 *
-	 * @param int    $post_id    Post ID on which comment was made.
-	 * @param string $email      Comment author's email.
-	 * @param string $name       Comment author's name.
-	 * @param int    $comment_id Comment ID.
+	 * @param int $post_id Post ID on which comment was made.
+	 * @param string $email Comment author's email.
+	 * @param string $name Comment author's name.
+	 * @param int $comment_id Comment ID.
 	 */
 	public function subscribe_later( $post_id, $email, $name, $comment_id ) {
 
