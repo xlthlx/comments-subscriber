@@ -286,7 +286,7 @@ class Notify_And_Send {
 	/**
 	 * Subscribe a user to a post.
 	 *
-	 * @param int $post_id Post ID on which to subscribe.
+	 * @param int    $post_id Post ID on which to subscribe.
 	 * @param string $email User's email.
 	 * @param string $name User's name.
 	 *
@@ -328,10 +328,10 @@ class Notify_And_Send {
 	 * Subscribe a comment author to a post after his comment has
 	 * been held in moderation and is finally approved.
 	 *
-	 * @param int $post_id Post ID on which comment was made.
+	 * @param int    $post_id Post ID on which comment was made.
 	 * @param string $email Comment author's email.
 	 * @param string $name Comment author's name.
-	 * @param int $comment_id Comment ID.
+	 * @param int    $comment_id Comment ID.
 	 */
 	public function subscribe_later( $post_id, $email, $name, $comment_id ) {
 

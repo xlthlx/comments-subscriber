@@ -53,13 +53,13 @@ class Subscribers_List {
 			if ( ! empty( $list ) ) {
 
 				// Removes duplicate post IDs.
-				$ids = [];
+				$ids = array();
 				foreach ( $list as $r ) {
-					$ids[$r->comment_post_ID] = (int) $r->comment_post_ID;
+					$ids[ $r->comment_post_ID ] = (int) $r->comment_post_ID;
 				}
 
 				foreach ( $ids as $r ) {
-					$output .= '<ul>';
+					$output         .= '<ul>';
 					$comment_post_id = (int) $r;
 					$post_list       = get_post( $comment_post_id );
 
