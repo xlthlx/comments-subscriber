@@ -1,0 +1,16 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/wp-admin/options-general.php?page=comments-subscriber-settings",
+  "login": true,
+  "preferredVersions": {
+    "php": "8.0",
+    "wp": "latest"
+  },
+  "siteOptions": {
+    "blogname": "Comments Subscriber",
+    "blogdescription": "Comments Subscriber is a WordPress plugin that simply adds a subscription checkbox to your WordPress comments form to let your visitors subscribe to comments."
+  },
+  "plugins": [
+    "comments-subscriber"
+  ]
+}

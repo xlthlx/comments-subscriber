@@ -2,6 +2,7 @@
 
 [![Version](https://img.shields.io/badge/version-1.0.1-blueviolet)](https://plugintests.com/plugins/wporg/comments-subscriber/latest) [![License](https://img.shields.io/badge/license-GPL_v3-blueviolet)](https://github.com/xlthlx/comments-subscriber/blob/main/LICENSE)
 
+[![Preview](https://img.shields.io/badge/live-preview-blueviolet?logo=wordpress&style=for-the-badge)](https://playground.wordpress.net/?mode=seamless#{%22$schema%22:%22https://playground.wordpress.net/blueprint-schema.json%22,%22landingPage%22:%22/wp-admin/options-general.php?page=comments-subscriber-settings%22,%22login%22:true,%22preferredVersions%22:{%22php%22:%228.0%22,%22wp%22:%22latest%22},%22siteOptions%22:{%22blogname%22:%22Comments%20Subscriber%22,%22blogdescription%22:%22Comments%20Subscriber%20is%20a%20WordPress%20plugin%20that%20simply%20adds%20a%20subscription%20checkbox%20to%20your%20WordPress%20comments%20form%20to%20let%20your%20visitors%20subscribe%20to%20comments.%22},%22plugins%22:[%22comments-subscriber%22]})
 
 **Contributors:** xlthlx \
 **Donate link:** https://paypal.me/xlthlx \
