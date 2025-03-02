@@ -1,13 +1,14 @@
 {
   "core": null,
   "themes": [
-    "https://downloads.wordpress.org/theme/twentytwentyfour.zip"
+    "https://downloads.wordpress.org/theme/twentytwentyfive.zip"
   ],
   "plugins": [
     ".",
     "https://downloads.wordpress.org/plugin/check-email.zip",
     "https://downloads.wordpress.org/plugin/plugin-check.zip",
-    "https://downloads.wordpress.org/plugin/query-monitor.zip"
+    "https://downloads.wordpress.org/plugin/query-monitor.zip",
+    "https://downloads.wordpress.org/plugin/wordpress-beta-tester.zip"
   ],
   "mappings": {
     "wp-content": "./wp-content"
@@ -15,10 +16,11 @@
   "port": 1010,
   "testsPort": 1011,
   "config": {
-    "WP_DEBUG": true,
-    "WP_DEBUG_LOG": true,
-    "WP_DEBUG_DISPLAY": false,
+    "ALTERNATE_WP_CRON": true,
     "SCRIPT_DEBUG": true,
-    "ALTERNATE_WP_CRON": true
+    "WP_DEBUG": true,
+    "WP_DEBUG_DISPLAY": false,
+    "WP_DEBUG_LOG": true,
+    "WP_DEVELOPMENT_MODE": "plugin"
   }
 }
