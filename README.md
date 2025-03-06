@@ -1,6 +1,6 @@
 # ![Comments Subscriber](assets/banner.png "WordPress Plugin")
 
-[![Version](https://img.shields.io/badge/version-1.0.2-blueviolet)](https://plugintests.com/plugins/wporg/comments-subscriber/latest) [![License](https://img.shields.io/badge/license-GPL_v3-blueviolet)](https://github.com/xlthlx/comments-subscriber/blob/main/LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.3-blueviolet)](https://plugintests.com/plugins/wporg/comments-subscriber/latest) [![License](https://img.shields.io/badge/license-GPL_v3-blueviolet)](https://github.com/xlthlx/comments-subscriber/blob/main/LICENSE)
 
 [![Preview](https://img.shields.io/badge/live-preview-blueviolet?logo=wordpress&style=for-the-badge)](https://playground.wordpress.net/?mode=seamless#{%22$schema%22:%22https://playground.wordpress.net/blueprint-schema.json%22,%22landingPage%22:%22/wp-admin/options-general.php?page=comments-subscriber-settings%22,%22login%22:true,%22preferredVersions%22:{%22php%22:%228.0%22,%22wp%22:%22latest%22},%22siteOptions%22:{%22blogname%22:%22Comments%20Subscriber%22,%22blogdescription%22:%22Comments%20Subscriber%20is%20a%20WordPress%20plugin%20that%20simply%20adds%20a%20subscription%20checkbox%20to%20your%20WordPress%20comments%20form%20to%20let%20your%20visitors%20subscribe%20to%20comments.%22},%22plugins%22:[%22comments-subscriber%22]})
 
@@ -9,8 +9,8 @@
 **Tags:** comments,subscribe,follow,notifications \
 **Requires at least:** 5.9 \
 **Tested up to:** 6.7 \
-**Requires PHP:** 7.4 \
-**Stable tag:** 1.0.2 \
+**Requires PHP:** 8.2 \
+**Stable tag:** 1.0.3 \
 **License:** GPLv3 or later \
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -21,21 +21,17 @@ Set up a subscription checkbox to receive an email every time someone comments o
 Comments Subscriber is a WordPress plugin that simply adds a subscription checkbox to your WordPress comments form to let your visitors subscribe to comments.
 They will then be notified by email when others comment on the same post. Works automatically upon activation, no settings required.
 
-## Languages
-
-English.
-
 ## Installation
 
 1. Upload `comments-subscriber` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Enjoy
+3. Use the Settings->Comments Settings screen to configure the plugin
 
 ## Frequently Asked Questions
 
 ### Can I translate the plugin interface?
 
-Yes, just use the .POT file in the `languages` folder.
+Yes, you can contribute to the translation here https://translate.wordpress.org/projects/wp-plugins/comments-subscriber/.
 
 ## Screenshots
 
@@ -69,6 +65,10 @@ Yes, just use the .POT file in the `languages` folder.
 
 
 ## Changelog
+
+### 1.0.3
+
+* Bugfix: option checked by default
 
 ### 1.0.2
 

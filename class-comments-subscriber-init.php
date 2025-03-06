@@ -19,11 +19,12 @@ const CS_KSES_DEFAULT = array(
 	'li'     => array(),
 	'br'     => array(),
 	'input'  => array(
-		'type'  => array(),
-		'name'  => array(),
-		'value' => array(),
-		'class' => array(),
-		'id'    => array(),
+		'type'    => array(),
+		'name'    => array(),
+		'value'   => array(),
+		'class'   => array(),
+		'id'      => array(),
+		'checked' => array(),
 	),
 	'a'      => array(
 		'href'   => array(),

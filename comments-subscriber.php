@@ -3,7 +3,7 @@
  * Plugin Name: Comments Subscriber
  * Plugin URI: https://github.com/xlthlx/comments-subscriber
  * Description: Plugin to let visitors subscribe to comments and get email notifications.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: xlthlx
  * Author URI: https://piccioni.london
  * License: GPL3

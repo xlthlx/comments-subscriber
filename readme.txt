@@ -4,8 +4,8 @@ Donate link: https://paypal.me/xlthlx
 Tags: comments,subscribe,follow,notifications
 Requires at least: 5.9
 Tested up to: 6.7
-Requires PHP: 7.4
-Stable tag: 1.0.2
+Requires PHP: 8.2
+Stable tag: 1.0.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -16,21 +16,17 @@ Set up a subscription checkbox to receive an email every time someone comments o
 Comments Subscriber is a WordPress plugin that simply adds a subscription checkbox to your WordPress comments form to let your visitors subscribe to comments.
 They will then be notified by email when others comment on the same post. Works automatically upon activation, no settings required.
 
-== Languages ==
-
-English.
-
 == Installation ==
 
 1. Upload `comments-subscriber` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Enjoy
+3. Use the Settings->Comments Settings screen to configure the plugin
 
 == Frequently Asked Questions ==
 
 = Can I translate the plugin interface? =
 
-Yes, just use the .POT file in the `languages` folder.
+Yes, you can contribute to the translation [here](https://translate.wordpress.org/projects/wp-plugins/comments-subscriber/).
 
 == Screenshots ==
 
@@ -43,6 +39,9 @@ Yes, just use the .POT file in the `languages` folder.
 7. Subscribers list
 
 == Changelog ==
+
+= 1.0.3 =
+* Bugfix: option checked by default
 
 = 1.0.2 =
 * Bugfix: subscriptions list and remove
