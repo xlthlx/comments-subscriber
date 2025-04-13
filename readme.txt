@@ -3,9 +3,9 @@ Contributors: xlthlx
 Donate link: https://paypal.me/xlthlx
 Tags: comments,subscribe,follow,notifications
 Requires at least: 5.9
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 8.2
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -39,6 +39,10 @@ Yes, you can contribute to the translation [here](https://translate.wordpress.or
 7. Subscribers list
 
 == Changelog ==
+
+= 1.0.4 =
+* Tested up to 6.8
+* Updated dependencies
 
 = 1.0.3 =
 * Bugfix: option checked by default
