@@ -18,15 +18,11 @@ They will then be notified by email when others comment on the same post. Works 
 
 == Installation ==
 
-1. Upload `comments-subscriber` folder to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Use the Settings->Comments Settings screen to configure the plugin
+N/A
 
 == Frequently Asked Questions ==
 
-= Can I translate the plugin interface? =
-
-Yes, you can contribute to the translation [here](https://translate.wordpress.org/projects/wp-plugins/comments-subscriber/).
+N/A
 
 == Screenshots ==
 
