@@ -6,12 +6,12 @@
     "WordPress",
     "Plugins"
   ],
-  "homepage": "https://github.com/xlthlx",
+  "homepage": "https://github.com/xlthlx/comment-subscriber",
   "license": "GPL-3.0-or-later",
   "authors": [
     {
-      "name": "Contributors",
-      "homepage": "https://xlthlx.com"
+      "name": "xlthlx",
+      "homepage": "https://github.com/xlthlx/comment-subscriber"
     }
   ],
   "require-dev": {
