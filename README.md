@@ -6,7 +6,7 @@
 **Requires at least:** 5.9 \
 **Tested up to:** 6.8 \
 **Requires PHP:** 8.2 \
-**Stable tag:** 1.0.4 \
+**Stable tag:** 1.0.5 \
 **License:** GPLv3 or later \
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -57,6 +57,10 @@ N/A
 
 
 ## Changelog
+
+### 1.0.5
+
+* Update README files
 
 ### 1.0.4
 
